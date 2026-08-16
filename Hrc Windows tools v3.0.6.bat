@@ -1,7 +1,7 @@
 @echo off
 fltmc >nul 2>&1 || (powershell Start -File "%~f0" -Verb RunAs >nul 2>&1 && exit /b)
 chcp 65001 >nul 2>&1
-title HRC ÏµÍ³ÓÅ»¯¹¤¾ß V3.6 ×îÖÕ°æ
+title HRC ç³»ç»Ÿä¼˜åŒ–å·¥å…· V3.6 æœ€ç»ˆç‰ˆ
 
 powershell -Command "$code=@'
 Add-Type -AssemblyName System.Windows.Forms
@@ -18,7 +18,7 @@ $SELF_PATH = $MyInvocation.MyCommand.Path
 $AUTO_RUN_CFG = Join-Path $HRC_ROOT "auto_boot.ini"
 $RUN_MARK = Join-Path $HRC_ROOT "run_lock.lock"
 if(Test-Path $RUN_MARK){
-    [System.Windows.Forms.MessageBox]::Show("¹¤¾ßÕıÔÚÔËĞĞÖĞ£¬ÇëÎğÖØ¸´Æô¶¯", "ÌáÊ¾", "OK", "Warning")
+    [System.Windows.Forms.MessageBox]::Show("å·¥å…·æ­£åœ¨è¿è¡Œä¸­ï¼Œè¯·å‹¿é‡å¤å¯åŠ¨", "æç¤º", "OK", "Warning")
     exit
 }
 New-Item $RUN_MARK -ItemType File -Force | Out-Null
@@ -40,7 +40,7 @@ function Download-WithProgress {
     param($Url, $SavePath, $ProgressBar, $StatusLabel)
     if(Test-Path $SavePath){
         $fileSize = (Get-Item $SavePath).Length / 1MB
-        $StatusLabel.Text = "Ê¹ÓÃ±¾µØ»º´æ£º$([math]::Round($fileSize,2)) MB"
+        $StatusLabel.Text = "ä½¿ç”¨æœ¬åœ°ç¼“å­˜ï¼š$([math]::Round($fileSize,2)) MB"
         [System.Windows.Forms.Application]::DoEvents()
         return $true
     }
@@ -69,20 +69,20 @@ function Download-WithProgress {
                 $webClient.DownloadProgressChanged += {
                     $p = [Math]::Min($args[1].ProgressPercentage, 100)
                     $ProgressBar.Value = $p
-                    $StatusLabel.Text = "ÕıÔÚÏÂÔØ£º$([math]::Round($args[1].BytesReceived / 1MB,2)) MB / $([math]::Round($args[1].TotalBytesToReceive / 1MB,2)) MB"
+                    $StatusLabel.Text = "æ­£åœ¨ä¸‹è½½ï¼š$([math]::Round($args[1].BytesReceived / 1MB,2)) MB / $([math]::Round($args[1].TotalBytesToReceive / 1MB,2)) MB"
                     [System.Windows.Forms.Application]::DoEvents()
                 }
                 $asyncTask = $webClient.DownloadFileTaskAsync($targetUrl, $SavePath)
                 while(-not $asyncTask.Wait(10)){[System.Windows.Forms.Application]::DoEvents()}
                 if(Test-Path $SavePath){return $true}
             }catch{
-                $StatusLabel.Text = "ÏÂÔØ³¬Ê±£¬ÕıÔÚÖØÊÔ $($retry+1)/3"
+                $StatusLabel.Text = "ä¸‹è½½è¶…æ—¶ï¼Œæ­£åœ¨é‡è¯• $($retry+1)/3"
                 [System.Windows.Forms.Application]::DoEvents()
                 Start-Sleep 1
             }
         }
     }
-    $StatusLabel.Text = "ÏÂÔØÊ§°Ü£¬Ìø¹ıµ±Ç°²½Öè"
+    $StatusLabel.Text = "ä¸‹è½½å¤±è´¥ï¼Œè·³è¿‡å½“å‰æ­¥éª¤"
     [System.Windows.Forms.Application]::DoEvents()
     Start-Sleep 1
     return $false
@@ -94,7 +94,7 @@ function Cleanup-RedundantServices {
         "PlugPlay", "RpcSs", "Schedule", "Seclogon", "TermService", "Themes", "Winmgmt", "wuauserv",
         "nvvsvc", "amdacpsvc", "BthServ", "Spooler", "WlanSvc", "Dot3Svc", "msedgewebview2"
     )
-    $keepUninstall = @("nvidia","amd","intel","Çı¶¯","Çı¶¯ÈËÉú","Çı¶¯¾«Áé")
+    $keepUninstall = @("nvidia","amd","intel","é©±åŠ¨","é©±åŠ¨äººç”Ÿ","é©±åŠ¨ç²¾çµ")
     Get-Service | Where-Object { 
         $_.StartType -eq "Automatic" -and $_.Status -eq "Running" -and 
         -not ($keepServices -contains $_.Name.ToLower())
@@ -111,44 +111,44 @@ function Cleanup-RedundantServices {
 }
 
 $fullSteps = @(
-    @{p=5;t="1/21 ÖØÖÃWinsockÍøÂçÕ»";c={netsh winsock reset | Out-Null}},
-    @{p=10;t="2/21 ÖØÖÃTCP/IPĞ­ÒéÕ»";c={netsh int ip reset | Out-Null}},
-    @{p=15;t="3/21 ĞŞ¸´Windows¸üĞÂ×é¼ş";c={
+    @{p=5;t="1/21 é‡ç½®Winsockç½‘ç»œæ ˆ";c={netsh winsock reset | Out-Null}},
+    @{p=10;t="2/21 é‡ç½®TCP/IPåè®®æ ˆ";c={netsh int ip reset | Out-Null}},
+    @{p=15;t="3/21 ä¿®å¤Windowsæ›´æ–°ç»„ä»¶";c={
         Stop-Service wuauserv cryptsvc -Force -ErrorAction SilentlyContinue
         Rename-Item C:\Windows\SoftwareDistribution C:\Windows\SoftwareDistribution.old -Force -ErrorAction SilentlyContinue
         Rename-Item C:\Windows\System32\catroot2 C:\Windows\System32\catroot2.old -Force -ErrorAction SilentlyContinue
         Start-Service wuauserv cryptsvc
     }},
-    @{p=20;t="4/21 Ö´ĞĞDISMÏµÍ³¾µÏñĞŞ¸´";c={dism /online /cleanup-image /restorehealth | Out-Null}},
-    @{p=25;t="5/21 Ö´ĞĞSFCÏµÍ³ÎÄ¼şÉ¨Ãè";c={sfc /scannow | Out-Null}},
-    @{p=30;t="6/21 ÇåÀíºóÌ¨ÈßÓà·şÎñ½ø³Ì";c={Cleanup-RedundantServices}},
-    @{p=35;t="7/21 Ç¿ÖÆÊÍ·ÅÏµÍ³´ı»úÄÚ´æ";c={EmptyStandbyList.exe -all >$null 2>&1}},
-    @{p=40;t="8/21 °²×°VC++È«°æ±¾ÔËĞĞ¿â";c={
+    @{p=20;t="4/21 æ‰§è¡ŒDISMç³»ç»Ÿé•œåƒä¿®å¤";c={dism /online /cleanup-image /restorehealth | Out-Null}},
+    @{p=25;t="5/21 æ‰§è¡ŒSFCç³»ç»Ÿæ–‡ä»¶æ‰«æ";c={sfc /scannow | Out-Null}},
+    @{p=30;t="6/21 æ¸…ç†åå°å†—ä½™æœåŠ¡è¿›ç¨‹";c={Cleanup-RedundantServices}},
+    @{p=35;t="7/21 å¼ºåˆ¶é‡Šæ”¾ç³»ç»Ÿå¾…æœºå†…å­˜";c={EmptyStandbyList.exe -all >$null 2>&1}},
+    @{p=40;t="8/21 å®‰è£…VC++å…¨ç‰ˆæœ¬è¿è¡Œåº“";c={
         $vcPath = Join-Path $SETAPP_DIR vc_redist.exe
         Download-WithProgress -Url "https://aka.ms/vs/17/release/vc_redist.x64.exe" -SavePath $vcPath -ProgressBar $mainBar -StatusLabel $statusLabel
         Start-Process $vcPath /quiet /norestart -Wait
     }},
-    @{p=45;t="9/21 °²×°Java 17¹Ù·½ÔËĞĞ»·¾³";c={
+    @{p=45;t="9/21 å®‰è£…Java 17å®˜æ–¹è¿è¡Œç¯å¢ƒ";c={
         $javaPath = Join-Path $SETAPP_DIR jre17.exe
         Download-WithProgress -Url "https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.exe" -SavePath $javaPath -ProgressBar $mainBar -StatusLabel $statusLabel
         Start-Process $javaPath /s INSTALLDIR="C:\Program Files\Java\jdk-17" -Wait
     }},
-    @{p=50;t="10/21 ĞŞ¸´WindowsÓ¦ÓÃÉÌµê×é¼ş";c={Get-AppXPackage -AllUsers | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" -ErrorAction SilentlyContinue}}},
-    @{p=55;t="11/21 °²×°.NETÈ«°æ±¾ÔËĞĞ×é¼ş";c={dism /online /enable-feature /featurename:NetFx3 /All | Out-Null; winget install --id Microsoft.DotNet.DesktopRuntime.6 --id Microsoft.DotNet.DesktopRuntime.7 --id Microsoft.DotNet.DesktopRuntime.8 --silent --accept-package-agreements --accept-source-agreements | Out-Null}},
-    @{p=60;t="12/21 Ëø¶¨DefenderÉ¨ÃèCPUÎª5%";c={Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows Defender\Scan" AvgCPULoadFactor -Value 5 -Force}},
-    @{p=65;t="13/21 ¿ªÆô¸ßĞÔÄÜµçÔ´¼Æ»®";c={powercfg /duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61; powercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61}},
-    @{p=70;t="14/21 É¨ÃèËùÓĞ·ÇÏµÍ³ÅÌ»µµÀ";c={Get-Volume | Where-Object {$_.DriveLetter -ne $null -and $_.DriveLetter -ne "C"} | ForEach-Object {chkdsk $_.DriveLetter: /k >$null 2>&1}}},
-    @{p=75;t="15/21 Ğ¶ÔØÈ«¼ÒÍ°°²È«Èí¼ş";c={Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -match '360|ÌÚÑ¶¹Ü¼Ò|Â³´óÊ¦|½ğÉ½¶¾°Ô|°Ù¶ÈÎÀÊ¿' -and $_.DisplayName -notin @('»ğÈŞ°²È«Èí¼ş','Windows Defender','»ğÈŞ') -and -not ($keepUninstall | Where-Object {$_.DisplayName -match $_})} | ForEach-Object {if($_.UninstallString -match 'msiexec'){cmd /c "$($_.UninstallString) /x /s >$null 2>&1"}else{cmd /c "$($_.UninstallString) /s >$null 2>&1"}; Start-Sleep 3}}},
-    @{p=80;t="16/21 ¾²Ä¬°²×°×îĞÂ°æ»ğÈŞ";c={
+    @{p=50;t="10/21 ä¿®å¤Windowsåº”ç”¨å•†åº—ç»„ä»¶";c={Get-AppXPackage -AllUsers | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" -ErrorAction SilentlyContinue}}},
+    @{p=55;t="11/21 å®‰è£….NETå…¨ç‰ˆæœ¬è¿è¡Œç»„ä»¶";c={dism /online /enable-feature /featurename:NetFx3 /All | Out-Null; winget install --id Microsoft.DotNet.DesktopRuntime.6 --id Microsoft.DotNet.DesktopRuntime.7 --id Microsoft.DotNet.DesktopRuntime.8 --silent --accept-package-agreements --accept-source-agreements | Out-Null}},
+    @{p=60;t="12/21 é”å®šDefenderæ‰«æCPUä¸º5%";c={Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows Defender\Scan" AvgCPULoadFactor -Value 5 -Force}},
+    @{p=65;t="13/21 å¼€å¯é«˜æ€§èƒ½ç”µæºè®¡åˆ’";c={powercfg /duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61; powercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61}},
+    @{p=70;t="14/21 æ‰«ææ‰€æœ‰éç³»ç»Ÿç›˜åé“";c={Get-Volume | Where-Object {$_.DriveLetter -ne $null -and $_.DriveLetter -ne "C"} | ForEach-Object {chkdsk $_.DriveLetter: /k >$null 2>&1}}},
+    @{p=75;t="15/21 å¸è½½å…¨å®¶æ¡¶å®‰å…¨è½¯ä»¶";c={Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -match '360|è…¾è®¯ç®¡å®¶|é²å¤§å¸ˆ|é‡‘å±±æ¯’éœ¸|ç™¾åº¦å«å£«' -and $_.DisplayName -notin @('ç«ç»’å®‰å…¨è½¯ä»¶','Windows Defender','ç«ç»’') -and -not ($keepUninstall | Where-Object {$_.DisplayName -match $_})} | ForEach-Object {if($_.UninstallString -match 'msiexec'){cmd /c "$($_.UninstallString) /x /s >$null 2>&1"}else{cmd /c "$($_.UninstallString) /s >$null 2>&1"}; Start-Sleep 3}}},
+    @{p=80;t="16/21 é™é»˜å®‰è£…æœ€æ–°ç‰ˆç«ç»’";c={
         $hrcPath = Join-Path $SETAPP_DIR huorong.exe
         Download-WithProgress -Url "https://www.huorong.cn/download/huorong-latest.exe" -SavePath $hrcPath -ProgressBar $mainBar -StatusLabel $statusLabel
         Start-Process $hrcPath /verysilent /norestart -Wait
     }},
-    @{p=85;t="17/21 ÇåÀíÓÒ¼ü²Ëµ¥ÈßÓàÏîÄ¿";c={reg delete "HKCR\DesktopBackground\Shell" /va /f /reg:64 >$null 2>&1}},
-    @{p=90;t="18/21 Çå³ıXbox/OneDriveÈßÓà×é¼ş";c={Get-AppxPackage *Xbox*,*OneDrive*,*Cortana* | Remove-AppxPackage -ErrorAction SilentlyContinue}},
-    @{p=92;t="19/21 ĞŞ¸´ÈÎÎñÀ¸¿¨ËÀÎÊÌâ";c={Stop-Process explorer -Force -ErrorAction SilentlyContinue; Start-Process explorer}},
-    @{p=95;t="20/21 È«ÏµÍ³À¬»ø»º´æÇåÀíÍê³É";c={Remove-Item $env:TEMP\*,C:\Windows\Temp\*,C:\Windows\Prefetch\* -Recurse -Force; Clear-RecycleBin -Force}},
-    @{p=100;t="21/21 ÅäÖÃÖØÆôÄÚ´æÉ¨Ãè";c={bcdedit /set {default} memorytest=basic >$null 2>&1}}
+    @{p=85;t="17/21 æ¸…ç†å³é”®èœå•å†—ä½™é¡¹ç›®";c={reg delete "HKCR\DesktopBackground\Shell" /va /f /reg:64 >$null 2>&1}},
+    @{p=90;t="18/21 æ¸…é™¤Xbox/OneDriveå†—ä½™ç»„ä»¶";c={Get-AppxPackage *Xbox*,*OneDrive*,*Cortana* | Remove-AppxPackage -ErrorAction SilentlyContinue}},
+    @{p=92;t="19/21 ä¿®å¤ä»»åŠ¡æ å¡æ­»é—®é¢˜";c={Stop-Process explorer -Force -ErrorAction SilentlyContinue; Start-Process explorer}},
+    @{p=95;t="20/21 å…¨ç³»ç»Ÿåƒåœ¾ç¼“å­˜æ¸…ç†å®Œæˆ";c={Remove-Item $env:TEMP\*,C:\Windows\Temp\*,C:\Windows\Prefetch\* -Recurse -Force; Clear-RecycleBin -Force}},
+    @{p=100;t="21/21 é…ç½®é‡å¯å†…å­˜æ‰«æ";c={bcdedit /set {default} memorytest=basic >$null 2>&1}}
 )
 
 $winVer = [Environment]::OSVersion.Version
@@ -184,7 +184,7 @@ if(Test-Path $AUTO_RUN_CFG){
     $bootWin.Controls.Add($starLayer)
 
     $hrcTitle = New-Object System.Windows.Forms.Label
-    $hrcTitle.Text = "HRC ¹¤¾ß¼¯"
+    $hrcTitle.Text = "HRC å·¥å…·é›†"
     $hrcTitle.Font = New-Object System.Drawing.Font("Segoe UI", 56, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Point)
     $hrcTitle.ForeColor = [System.Drawing.Color]::White
     $hrcTitle.Location = [System.Drawing.Point]::new($centerX - 180, $centerY - 80)
@@ -300,9 +300,9 @@ if(Test-Path $AUTO_RUN_CFG){
         $mainBar.Visible = $true
         $statusLabel.Visible = $true
 
-        $nodeLabels = @{30="Íâ½ÓÉè±¸É¨ÃèÍê³É";60="×é¼şÔ¤¼ÓÔØÍê³É";90="ÏµÍ³ÅäÖÃ³õÊ¼»¯Íê³É"}
+        $nodeLabels = @{30="å¤–æ¥è®¾å¤‡æ‰«æå®Œæˆ";60="ç»„ä»¶é¢„åŠ è½½å®Œæˆ";90="ç³»ç»Ÿé…ç½®åˆå§‹åŒ–å®Œæˆ"}
         foreach($step in $fullSteps){
-            if($isWin7 -and $step.t -match "TranslucentTB|winget|ÄÚ´æÉ¨Ãè"){continue}
+            if($isWin7 -and $step.t -match "TranslucentTB|winget|å†…å­˜æ‰«æ"){continue}
             $mainBar.Value = $step.p
             $statusLabel.Text = $step.t
             if($nodeLabels.ContainsKey($step.p)){
@@ -324,7 +324,7 @@ if(Test-Path $AUTO_RUN_CFG){
         }
 
         $animTimer.Stop()
-        $statusLabel.Text = "ĞŞ¸´Íê³É£¬¼´½«ÖØÆô..."
+        $statusLabel.Text = "ä¿®å¤å®Œæˆï¼Œå³å°†é‡å¯..."
         [System.Windows.Forms.Application]::DoEvents()
         Start-Sleep 1.5
 
@@ -348,7 +348,7 @@ $bootWin.TopMost = $true
 $bootWin.DoubleBuffered = $true
 
 $bootLogo = New-Object System.Windows.Forms.Label
-$bootLogo.Text = "HRC ¹¤¾ß¼¯"
+$bootLogo.Text = "HRC å·¥å…·é›†"
 $bootLogo.Font = New-Object System.Drawing.Font("Segoe UI", 64, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Point)
 $bootLogo.ForeColor = [System.Drawing.Color]::White
 $bootLogo.Location = [System.Drawing.Point]::new(($bootWin.Width/2)-160, ($bootWin.Height/2)-120)
@@ -367,8 +367,8 @@ $bootWin.Controls.Add($bootBar)
 $bootWin.Add_Shown({
     $bootWin.Refresh()
     $totalSteps = @(
-        @{p=10;name="³õÊ¼»¯»º´æÄ¿Â¼";action={Start-Sleep -Milliseconds 100}},
-        @{p=35;name="É¨ÃèÍâ½ÓÉè±¸¼ÓÔØÒôÆµ";action={
+        @{p=10;name="åˆå§‹åŒ–ç¼“å­˜ç›®å½•";action={Start-Sleep -Milliseconds 100}},
+        @{p=35;name="æ‰«æå¤–æ¥è®¾å¤‡åŠ è½½éŸ³é¢‘";action={
             $usbDrives = Get-Volume | Where-Object { $_.DriveType -eq 'Removable' -and $_.DriveLetter } | Select-Object -ExpandProperty DriveLetter -ErrorAction SilentlyContinue
             $targetMusic = $null
             foreach($drv in $usbDrives){
@@ -383,14 +383,14 @@ $bootWin.Add_Shown({
                 Copy-Item $targetMusic $musicPath -Force -ErrorAction SilentlyContinue
             }
         }},
-        @{p=70;name="ÏÂÔØ×é¼ş°²×°°ü";action={
+        @{p=70;name="ä¸‹è½½ç»„ä»¶å®‰è£…åŒ…";action={
             $tbPath = Join-Path $SETAPP_DIR "translucenttb.exe"
             if(-not (Test-Path $tbPath) -and -not $isWin7){
                 try{irm "https://cdn.jsdelivr.net/gh/TranslucentTB/TranslucentTB@latest/TranslucentTB.exe" -OutFile $tbPath -TimeoutSec 90}catch{}
             }
         }},
-        @{p=90;name="Ô¤¼ÓÔØÏµÍ³×é¼ş";action={Start-Sleep -Milliseconds 100}},
-        @{p=100;name="Æô¶¯Íê³É";action={Start-Sleep -Milliseconds 50}}
+        @{p=90;name="é¢„åŠ è½½ç³»ç»Ÿç»„ä»¶";action={Start-Sleep -Milliseconds 100}},
+        @{p=100;name="å¯åŠ¨å®Œæˆ";action={Start-Sleep -Milliseconds 50}}
     )
     foreach($step in $totalSteps){
         $bootBar.Value = $step.p
@@ -422,7 +422,7 @@ $agree.Size="780,680"
 $agree.StartPosition="CenterScreen"
 $agree.FormBorderStyle="FixedDialog"
 $agree.BackColor="White"
-$agree.Text="HRC ÏµÍ³ÓÅ»¯¹¤¾ß ¿ªÔ´ÒşË½ÉùÃ÷ V3.6"
+$agree.Text="HRC ç³»ç»Ÿä¼˜åŒ–å·¥å…· å¼€æºéšç§å£°æ˜ V3.6"
 $agree.Font = $globalFont
 $agree.MaximizeBox = $false
 $agree.MinimizeBox = $false
@@ -431,18 +431,18 @@ $txt=New-Object System.Windows.Forms.Label
 $txt.Location="30,30"
 $txt.Size="720,580"
 $txt.Font = $globalFont
-$txt.Text="HRC ÏµÍ³ÓÅ»¯¹¤¾ß ¿ªÔ´ÏîÄ¿ÒşË½ÉùÃ÷ V3.6`nÉúĞ§ÈÕÆÚ£º2026Äê08ÔÂ13ÈÕ`n`n1. ±¾¹¤¾ßÎª´¿±¾µØÔËĞĞµÄ¿ªÔ´¹¤¾ß£¬ËùÓĞ²Ù×÷¾ùÔÚÄúµÄÉè±¸ÄÚÖ´ĞĞ£¬È«³Ì²»»áÊÕ¼¯¡¢ÉÏ´«¡¢¹²ÏíÈÎºÎ¸öÈËĞÅÏ¢»òÉè±¸Êı¾İ¡£`n`n2. ±¾¹¤¾ß½öÓÃÓÚ¸öÈË·ÇÉÌÒµÓÃÍ¾£¬Ê¹ÓÃ¹ı³ÌÖĞĞŞ¸ÄÏµÍ³ÅäÖÃ¡¢Ğ¶ÔØÈí¼ş¡¢Ö´ĞĞĞŞ¸´²Ù×÷²úÉúµÄÈ«²¿·çÏÕ£¬ÓÉÊ¹ÓÃÕß×ÔĞĞ³Ğµ£¡£`n`n3. ±¾¹¤¾ßÎŞÈÎºÎµÚÈı·½¹ã¸æ¡¢¶ñÒâ´úÂë£¬½ö»á´Ó¹Ù·½ÓòÃûÏÂÔØ±ØÒªµÄÔËĞĞ×é¼ş£¬ÎŞÈÎºÎºóÌ¨×·×ÙĞĞÎª¡£`n`n4. µã»÷¡¸Í¬Òâ¡¹¼´´ú±íÄúÒÑÍêÕûÔÄ¶Á²¢½ÓÊÜ±¾ÉùÃ÷È«²¿Ìõ¿î£¬²»Í¬ÒâÇëµã»÷È¡Ïû£¬¹¤¾ß½«×Ô¶¯ÍË³ö²¢Çå³ıËùÓĞÁÙÊ±ÎÄ¼ş¡£"
+$txt.Text="HRC ç³»ç»Ÿä¼˜åŒ–å·¥å…· å¼€æºé¡¹ç›®éšç§å£°æ˜ V3.6`nç”Ÿæ•ˆæ—¥æœŸï¼š2026å¹´08æœˆ13æ—¥`n`n1. æœ¬å·¥å…·ä¸ºçº¯æœ¬åœ°è¿è¡Œçš„å¼€æºå·¥å…·ï¼Œæ‰€æœ‰æ“ä½œå‡åœ¨æ‚¨çš„è®¾å¤‡å†…æ‰§è¡Œï¼Œå…¨ç¨‹ä¸ä¼šæ”¶é›†ã€ä¸Šä¼ ã€å…±äº«ä»»ä½•ä¸ªäººä¿¡æ¯æˆ–è®¾å¤‡æ•°æ®ã€‚`n`n2. æœ¬å·¥å…·ä»…ç”¨äºä¸ªäººéå•†ä¸šç”¨é€”ï¼Œä½¿ç”¨è¿‡ç¨‹ä¸­ä¿®æ”¹ç³»ç»Ÿé…ç½®ã€å¸è½½è½¯ä»¶ã€æ‰§è¡Œä¿®å¤æ“ä½œäº§ç”Ÿçš„å…¨éƒ¨é£é™©ï¼Œç”±ä½¿ç”¨è€…è‡ªè¡Œæ‰¿æ‹…ã€‚`n`n3. æœ¬å·¥å…·æ— ä»»ä½•ç¬¬ä¸‰æ–¹å¹¿å‘Šã€æ¶æ„ä»£ç ï¼Œä»…ä¼šä»å®˜æ–¹åŸŸåä¸‹è½½å¿…è¦çš„è¿è¡Œç»„ä»¶ï¼Œæ— ä»»ä½•åå°è¿½è¸ªè¡Œä¸ºã€‚`n`n4. ç‚¹å‡»ã€ŒåŒæ„ã€å³ä»£è¡¨æ‚¨å·²å®Œæ•´é˜…è¯»å¹¶æ¥å—æœ¬å£°æ˜å…¨éƒ¨æ¡æ¬¾ï¼Œä¸åŒæ„è¯·ç‚¹å‡»å–æ¶ˆï¼Œå·¥å…·å°†è‡ªåŠ¨é€€å‡ºå¹¶æ¸…é™¤æ‰€æœ‰ä¸´æ—¶æ–‡ä»¶ã€‚"
 $agree.Controls.Add($txt)
 
 $btnYes=New-Object System.Windows.Forms.Button
-$btnYes.Text="ÎÒÒÑÔÄ¶Á²¢Í¬Òâ"
+$btnYes.Text="æˆ‘å·²é˜…è¯»å¹¶åŒæ„"
 $btnYes.Location="580,620"
 $btnYes.Size="140,32"
 $btnYes.DialogResult="OK"
 $agree.Controls.Add($btnYes)
 
 $btnNo=New-Object System.Windows.Forms.Button
-$btnNo.Text="È¡Ïû"
+$btnNo.Text="å–æ¶ˆ"
 $btnNo.Location="480,620"
 $btnNo.Size="80,32"
 $btnNo.DialogResult="Cancel"
@@ -451,18 +451,18 @@ $agree.Controls.Add($btnNo)
 if($agree.ShowDialog() -ne "OK"){Remove-Item $HRC_ROOT -Recurse -Force -ErrorAction SilentlyContinue;Remove-Item $RUN_MARK -Force -ErrorAction SilentlyContinue;Remove-Item $SELF_PATH -Force -ErrorAction SilentlyContinue;exit}
 
 $modes=@(
-    @{n="? È«×Ô¶¯»ù´¡Ä£Ê½";d="ÎŞµ¯´°×Ô¶¯Ö´ĞĞ£¬À­ÂúÏÔÊ¾Æ÷Ë¢ĞÂÂÊ£¬¼æÈİËùÓĞÉè±¸";level="normal"},
-    @{n="? È«¼ÒÍ°+°²È«Èí¼şÈ«ÇåÄ£Ê½";d="³ı»ğÈŞÍâËùÓĞ°²È«Èí¼şÈ«²¿Ğ¶ÔØ£¬×Ô¶¯°²×°×îĞÂ°æ»ğÈŞ";level="high"},
-    @{n="? Win7-Win11 È«ÏµÍ³ÇåÀíĞŞ¸´";d="È«°æ±¾¼æÈİ£¬ÇåÀíËùÓĞÏµÍ³ÈßÓà£¬ĞŞ¸´ËùÓĞ³£¼ûbug";level="normal"},
-    @{n="? ÊÖ¶¯È·ÈÏÄ£Ê½";d="Ã¿Ò»²½ÓÅ»¯Ç°µ¯³öÈ·ÈÏ£¬¿É×ÔÓÉÌø¹ı²»ĞèÒªµÄÓÅ»¯Ïî";level="normal"},
-    @{n="? Ç¿´òÇı¶¯Ä£Ê½";d="ÊÊÓÃÓÚÀÏÉè±¸°²×°²»ÉÏÇı¶¯£¬Ê¹ÓÃ¹Ù·½Çı¶¯³ÌĞòÇ¿´ò¹¦ÄÜ";level="high"},
-    @{n="? ÇáÁ¿¼æÈİÄ£Ê½";d="½ö×ö»ù´¡ÓÅ»¯£¬±£ÁôËùÓĞÏµÍ³Ô­Éú¹¦ÄÜ£¬ÊÊºÏ°ì¹«Éè±¸";level="normal"},
-    @{n="? ÁªÍøÈ«Á¿É¨ÃèĞŞ¸´";d="21²½È«Á´Â·ĞŞ¸´£¬ÏµÍ³ĞÔÄÜÀ­Âú£¬ÖØÆô×Ô¶¯ÅÜÄÚ´æ¼ì²â";level="high"},
-    @{n="? ÀëÏßÈ«Á¿É¨ÃèĞŞ¸´";d="½öÊ¹ÓÃ±¾µØÏµÍ³ÃüÁî£¬²»ÁªÍø²»¸üĞÂ£¬È«Á¿É¨ÃèĞŞ¸´";level="normal"},
-    @{n="? Ï£ÎÖÒ»Ìå»ú×¨ÓÃ°æ±¾";d="ÍêÕû±£ÁôÏ£ÎÖËùÓĞ×Ô´ø¹¦ÄÜ£¬È±Ê§Ó¦ÓÃ×Ô¶¯²¹È«";level="normal"},
-    @{n="? ³£ÓÃÈí¼ş×Ô¶¯°²×°Ä£Ê½";d="×Ô¶¯°²×°³£ÓÃÊÊÅä¹¤¾ß£¬¾²Ä¬ÎŞµ¯´°";level="normal"},
-    @{n="? ÏµÍ³¼¤»î/°æ±¾ÇĞ»»Ä£Ê½";d="µ÷ÓÃ¿ªÔ´MAS·½°¸£¬Ò»¼üÓÀ¾Ã¼¤»îWindows";level="high"},
-    @{n="? ±¾µØÕË»§ÃÜÂëÖØÖÃ¹¤¾ß";d="Ò»¼üÇå¿Õ¹ÜÀíÔ±/À´±öÕË»§ÃÜÂë£¬½öÓÃÓÚ±¾µØÕË»§½âËø£¬ÎŞÍøÂçÇëÇó";level="normal"}
+    @{n="? å…¨è‡ªåŠ¨åŸºç¡€æ¨¡å¼";d="æ— å¼¹çª—è‡ªåŠ¨æ‰§è¡Œï¼Œæ‹‰æ»¡æ˜¾ç¤ºå™¨åˆ·æ–°ç‡ï¼Œå…¼å®¹æ‰€æœ‰è®¾å¤‡";level="normal"},
+    @{n="? å…¨å®¶æ¡¶+å®‰å…¨è½¯ä»¶å…¨æ¸…æ¨¡å¼";d="é™¤ç«ç»’å¤–æ‰€æœ‰å®‰å…¨è½¯ä»¶å…¨éƒ¨å¸è½½ï¼Œè‡ªåŠ¨å®‰è£…æœ€æ–°ç‰ˆç«ç»’";level="high"},
+    @{n="? Win7-Win11 å…¨ç³»ç»Ÿæ¸…ç†ä¿®å¤";d="å…¨ç‰ˆæœ¬å…¼å®¹ï¼Œæ¸…ç†æ‰€æœ‰ç³»ç»Ÿå†—ä½™ï¼Œä¿®å¤æ‰€æœ‰å¸¸è§bug";level="normal"},
+    @{n="? æ‰‹åŠ¨ç¡®è®¤æ¨¡å¼";d="æ¯ä¸€æ­¥ä¼˜åŒ–å‰å¼¹å‡ºç¡®è®¤ï¼Œå¯è‡ªç”±è·³è¿‡ä¸éœ€è¦çš„ä¼˜åŒ–é¡¹";level="normal"},
+    @{n="? å¼ºæ‰“é©±åŠ¨æ¨¡å¼";d="é€‚ç”¨äºè€è®¾å¤‡å®‰è£…ä¸ä¸Šé©±åŠ¨ï¼Œä½¿ç”¨å®˜æ–¹é©±åŠ¨ç¨‹åºå¼ºæ‰“åŠŸèƒ½";level="high"},
+    @{n="? è½»é‡å…¼å®¹æ¨¡å¼";d="ä»…åšåŸºç¡€ä¼˜åŒ–ï¼Œä¿ç•™æ‰€æœ‰ç³»ç»ŸåŸç”ŸåŠŸèƒ½ï¼Œé€‚åˆåŠå…¬è®¾å¤‡";level="normal"},
+    @{n="? è”ç½‘å…¨é‡æ‰«æä¿®å¤";d="21æ­¥å…¨é“¾è·¯ä¿®å¤ï¼Œç³»ç»Ÿæ€§èƒ½æ‹‰æ»¡ï¼Œé‡å¯è‡ªåŠ¨è·‘å†…å­˜æ£€æµ‹";level="high"},
+    @{n="? ç¦»çº¿å…¨é‡æ‰«æä¿®å¤";d="ä»…ä½¿ç”¨æœ¬åœ°ç³»ç»Ÿå‘½ä»¤ï¼Œä¸è”ç½‘ä¸æ›´æ–°ï¼Œå…¨é‡æ‰«æä¿®å¤";level="normal"},
+    @{n="? å¸Œæ²ƒä¸€ä½“æœºä¸“ç”¨ç‰ˆæœ¬";d="å®Œæ•´ä¿ç•™å¸Œæ²ƒæ‰€æœ‰è‡ªå¸¦åŠŸèƒ½ï¼Œç¼ºå¤±åº”ç”¨è‡ªåŠ¨è¡¥å…¨";level="normal"},
+    @{n="? å¸¸ç”¨è½¯ä»¶è‡ªåŠ¨å®‰è£…æ¨¡å¼";d="è‡ªåŠ¨å®‰è£…å¸¸ç”¨é€‚é…å·¥å…·ï¼Œé™é»˜æ— å¼¹çª—";level="normal"},
+    @{n="? ç³»ç»Ÿæ¿€æ´»/ç‰ˆæœ¬åˆ‡æ¢æ¨¡å¼";d="è°ƒç”¨å¼€æºMASæ–¹æ¡ˆï¼Œä¸€é”®æ°¸ä¹…æ¿€æ´»Windows";level="high"},
+    @{n="? æœ¬åœ°è´¦æˆ·å¯†ç é‡ç½®å·¥å…·";d="ä¸€é”®æ¸…ç©ºç®¡ç†å‘˜/æ¥å®¾è´¦æˆ·å¯†ç ï¼Œä»…ç”¨äºæœ¬åœ°è´¦æˆ·è§£é”ï¼Œæ— ç½‘ç»œè¯·æ±‚";level="normal"}
 )
 
 $modeWin=New-Object System.Windows.Forms.Form
@@ -470,33 +470,33 @@ $modeWin.Size="740,1000"
 $modeWin.StartPosition="CenterScreen"
 $modeWin.FormBorderStyle="FixedDialog"
 $modeWin.BackColor="White"
-$modeWin.Text="HRC È«Ä£Ê½¹¤¾ßÏä V3.6"
+$modeWin.Text="HRC å…¨æ¨¡å¼å·¥å…·ç®± V3.6"
 $modeWin.Font = $globalFont
 $modeWin.MaximizeBox = $false
 $modeWin.MinimizeBox = $false
 
 $musicSwitch = New-Object System.Windows.Forms.CheckBox
-$musicSwitch.Text = "²¥·ÅÍâ½ÓÉè±¸ÒôÆµ"
+$musicSwitch.Text = "æ’­æ”¾å¤–æ¥è®¾å¤‡éŸ³é¢‘"
 $musicSwitch.Font = $globalFont
 $musicSwitch.Location = [System.Drawing.Point]::new(60, 900)
 $modeWin.Controls.Add($musicSwitch)
 
 $autoCleanSwitch = New-Object System.Windows.Forms.CheckBox
-$autoCleanSwitch.Text = "ÔËĞĞÍê³Éºó×Ô¶¯Çå³ıËùÓĞ¹¤¾ß»º´æÓë½Å±¾"
+$autoCleanSwitch.Text = "è¿è¡Œå®Œæˆåè‡ªåŠ¨æ¸…é™¤æ‰€æœ‰å·¥å…·ç¼“å­˜ä¸è„šæœ¬"
 $autoCleanSwitch.Font = $globalFont
 $autoCleanSwitch.Checked = $true
 $autoCleanSwitch.Location = [System.Drawing.Point]::new(60, 925)
 $modeWin.Controls.Add($autoCleanSwitch)
 
 $autoRunSwitch = New-Object System.Windows.Forms.CheckBox
-$autoRunSwitch.Text = "ÏÂ´ÎÖØÆô×Ô¶¯Ö´ĞĞÈ«Á¿ĞŞ¸´"
+$autoRunSwitch.Text = "ä¸‹æ¬¡é‡å¯è‡ªåŠ¨æ‰§è¡Œå…¨é‡ä¿®å¤"
 $autoRunSwitch.Font = $globalFont
 $autoRunSwitch.Location = [System.Drawing.Point]::new(60, 950)
 $autoRunSwitch.Visible = $false
 $modeWin.Controls.Add($autoRunSwitch)
 
 $modeTitle=New-Object System.Windows.Forms.Label
-$modeTitle.Text="ÇëÑ¡ÔñÓÅ»¯ÔËĞĞÄ£Ê½"
+$modeTitle.Text="è¯·é€‰æ‹©ä¼˜åŒ–è¿è¡Œæ¨¡å¼"
 $modeTitle.Font=New-Object System.Drawing.Font("Segoe UI", 16, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Point)
 $modeTitle.Location="270,30"
 $modeWin.Controls.Add($modeTitle)
@@ -526,7 +526,7 @@ for($i=0;$i -lt $modes.Count;$i++){
 }
 
 $btnOk=New-Object System.Windows.Forms.Button
-$btnOk.Text="È·¶¨"
+$btnOk.Text="ç¡®å®š"
 $btnOk.Location="560,965"
 $btnOk.Size="80,28"
 $btnOk.DialogResult="OK"
@@ -535,10 +535,10 @@ $modeWin.Controls.Add($btnOk)
 $modeWin.Add_FormClosing({
     if($_.DialogResult -ne "OK"){return}
     if($modes[$sel].level -eq "high"){
-        $pass = Confirm-ThreeTimes -Title "¸ßÎ£²Ù×÷Ä£Ê½È·ÈÏ" `
-            -Msg1 "Äúµ±Ç°Ñ¡ÖĞµÄÄ£Ê½»áĞŞ¸ÄÏµÍ³ºËĞÄÅäÖÃ¡¢Ğ¶ÔØµÚÈı·½Èí¼ş£¬²Ù×÷²»¿ÉÄæ£¬ÊÇ·ñ¼ÌĞø£¿" `
-            -Msg2 "¸ÃÄ£Ê½»áÇåÀíÏµÍ³ÈßÓà×é¼ş¡¢ĞŞ¸Ä°²È«Èí¼şÅäÖÃ£¬¿ÉÄÜµ¼ÖÂ²¿·ÖµÚÈı·½Èí¼şÔËĞĞÒì³££¬ÊÇ·ñÈ·ÈÏ£¿" `
-            -Msg3 "×îÖÕÈ·ÈÏ£ºÄúÃ÷È·ÖªÏş¸ÃÄ£Ê½µÄ²Ù×÷·çÏÕ£¬ÈÔÒªÖ´ĞĞ¸ÃÄ£Ê½£¿"
+        $pass = Confirm-ThreeTimes -Title "é«˜å±æ“ä½œæ¨¡å¼ç¡®è®¤" `
+            -Msg1 "æ‚¨å½“å‰é€‰ä¸­çš„æ¨¡å¼ä¼šä¿®æ”¹ç³»ç»Ÿæ ¸å¿ƒé…ç½®ã€å¸è½½ç¬¬ä¸‰æ–¹è½¯ä»¶ï¼Œæ“ä½œä¸å¯é€†ï¼Œæ˜¯å¦ç»§ç»­ï¼Ÿ" `
+            -Msg2 "è¯¥æ¨¡å¼ä¼šæ¸…ç†ç³»ç»Ÿå†—ä½™ç»„ä»¶ã€ä¿®æ”¹å®‰å…¨è½¯ä»¶é…ç½®ï¼Œå¯èƒ½å¯¼è‡´éƒ¨åˆ†ç¬¬ä¸‰æ–¹è½¯ä»¶è¿è¡Œå¼‚å¸¸ï¼Œæ˜¯å¦ç¡®è®¤ï¼Ÿ" `
+            -Msg3 "æœ€ç»ˆç¡®è®¤ï¼šæ‚¨æ˜ç¡®çŸ¥æ™“è¯¥æ¨¡å¼çš„æ“ä½œé£é™©ï¼Œä»è¦æ‰§è¡Œè¯¥æ¨¡å¼ï¼Ÿ"
         if(-not $pass){
             $_.Cancel = $true
             $script:sel = 0
@@ -552,17 +552,17 @@ $secBox = New-Object System.Windows.Forms.TextBox
 $secBox.Text = "30"
 
 if($autoRunSwitch.Checked){
-    $autoPass = Confirm-ThreeTimes -Title "¿ª»ú×Ô¶¯ÔËĞĞÈ·ÈÏ" `
-        -Msg1 "¿ªÆô¸ÃÑ¡Ïîºó£¬ÏÂ´ÎÉè±¸ÖØÆôÊ±»á×Ô¶¯Ö´ĞĞÈ«Á¿ĞŞ¸´£¬»áÑÓ³¤¿ª»úÊ±¼ä£¬ÊÇ·ñ¼ÌĞø£¿" `
-        -Msg2 "×Ô¶¯ÔËĞĞ¹ı³ÌÎŞÈÎºÎÈË¹¤¸ÉÔ¤»ú»á£¬¿ÉÄÜµ¼ÖÂ¿ª»úºóÈí¼ş/ÏµÍ³Òì³££¬ÊÇ·ñÈ·ÈÏ£¿" `
-        -Msg3 "×îÖÕÈ·ÈÏ£ºÄúÃ÷È·ÖªÏş¸Ã¹¦ÄÜµÄ·çÏÕ£¬ÈÔÒª¿ªÆôÖØÆô×Ô¶¯ÔËĞĞ£¿"
+    $autoPass = Confirm-ThreeTimes -Title "å¼€æœºè‡ªåŠ¨è¿è¡Œç¡®è®¤" `
+        -Msg1 "å¼€å¯è¯¥é€‰é¡¹åï¼Œä¸‹æ¬¡è®¾å¤‡é‡å¯æ—¶ä¼šè‡ªåŠ¨æ‰§è¡Œå…¨é‡ä¿®å¤ï¼Œä¼šå»¶é•¿å¼€æœºæ—¶é—´ï¼Œæ˜¯å¦ç»§ç»­ï¼Ÿ" `
+        -Msg2 "è‡ªåŠ¨è¿è¡Œè¿‡ç¨‹æ— ä»»ä½•äººå·¥å¹²é¢„æœºä¼šï¼Œå¯èƒ½å¯¼è‡´å¼€æœºåè½¯ä»¶/ç³»ç»Ÿå¼‚å¸¸ï¼Œæ˜¯å¦ç¡®è®¤ï¼Ÿ" `
+        -Msg3 "æœ€ç»ˆç¡®è®¤ï¼šæ‚¨æ˜ç¡®çŸ¥æ™“è¯¥åŠŸèƒ½çš„é£é™©ï¼Œä»è¦å¼€å¯é‡å¯è‡ªåŠ¨è¿è¡Œï¼Ÿ"
     if(-not $autoPass){
         $autoRunSwitch.Checked = $false
     }else{
-        $rebootPass = Confirm-ThreeTimes -Title "ÖØÆôÈ·ÈÏ" `
-            -Msg1 "ÄãÈ·¶¨ÒªÉèÖÃµ¹¼ÆÊ±ÖØÆôÂğ£¿Õâ»á¶ªÊ§ËùÓĞÎ´±£´æµÄ¹¤×÷" `
-            -Msg2 "Î´±£´æµÄÎÄ¼ş»áÓÀÔ¶ÕÒ²»»ØÀ´£¬ÕæµÄÒªÖØÆô£¿" `
-            -Msg3 "×îºóÒ»´Î£ºÄãÕæµÄÕæµÄÈ·¶¨ÒªÏÖÔÚÉèÖÃÖØÆôÂğ£¿"
+        $rebootPass = Confirm-ThreeTimes -Title "é‡å¯ç¡®è®¤" `
+            -Msg1 "ä½ ç¡®å®šè¦è®¾ç½®å€’è®¡æ—¶é‡å¯å—ï¼Ÿè¿™ä¼šä¸¢å¤±æ‰€æœ‰æœªä¿å­˜çš„å·¥ä½œ" `
+            -Msg2 "æœªä¿å­˜çš„æ–‡ä»¶ä¼šæ°¸è¿œæ‰¾ä¸å›æ¥ï¼ŒçœŸçš„è¦é‡å¯ï¼Ÿ" `
+            -Msg3 "æœ€åä¸€æ¬¡ï¼šä½ çœŸçš„çœŸçš„ç¡®å®šè¦ç°åœ¨è®¾ç½®é‡å¯å—ï¼Ÿ"
         if($rebootPass){
             "reboot_sec=30" | Out-File $AUTO_RUN_CFG -Encoding UTF8
             Set-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\RunOnce" "HRC_AutoRunOnce" "`"$SELF_PATH`"" -Force
@@ -580,7 +580,7 @@ function Show-CleanupProgress{
     $cleanWin.DoubleBuffered = $true
 
     $cleanTitle = New-Object System.Windows.Forms.Label
-    $cleanTitle.Text = "ÕıÔÚÉ¾³ıÔËĞĞ×ÊÔ´"
+    $cleanTitle.Text = "æ­£åœ¨åˆ é™¤è¿è¡Œèµ„æº"
     $cleanTitle.Font = New-Object System.Drawing.Font("Segoe UI", 28, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Point)
     $cleanTitle.ForeColor = [System.Drawing.Color]::White
     $cleanTitle.Location = [System.Drawing.Point]::new(($cleanWin.Width/2)-160, ($cleanWin.Height/2)-80)
@@ -608,12 +608,12 @@ function Show-Reboot{
     param($sec = 30)
     $officeRunning = Get-Process | Where-Object {$_.Name -in @("WINWORD","EXCEL","POWERPNT")}
     if($officeRunning){
-        [System.Windows.Forms.MessageBox]::Show("¼ì²âµ½Word/Excel/PPTÕıÔÚÔËĞĞ£¬ÇëÏÈ±£´æÎÄ¼şºóÔÙÖ´ĞĞÖØÆô", "ÌáĞÑ", "OK", "Information")
+        [System.Windows.Forms.MessageBox]::Show("æ£€æµ‹åˆ°Word/Excel/PPTæ­£åœ¨è¿è¡Œï¼Œè¯·å…ˆä¿å­˜æ–‡ä»¶åå†æ‰§è¡Œé‡å¯", "æé†’", "OK", "Information")
     }
-    $rebootPass = Confirm-ThreeTimes -Title "ÖØÆô²Ù×÷È·ÈÏ" `
-        -Msg1 "¹¤¾ßÖ´ĞĞÍê³É¼´½«ÖØÆôÉè±¸£¬ËùÓĞÎ´±£´æµÄÎÄµµ¡¢¹¤×÷½ø¶È½«ÓÀ¾Ã¶ªÊ§£¬ÊÇ·ñ¼ÌĞø£¿" `
-        -Msg2 "ÖØÆô²Ù×÷»áÇ¿ÖÆ¹Ø±ÕËùÓĞÕıÔÚÔËĞĞµÄ³ÌĞò£¬Ã»ÓĞÈÎºÎ³·»Ø»ú»á£¬ÊÇ·ñÈ·ÈÏ£¿" `
-        -Msg3 "×îÖÕÈ·ÈÏ£ºÄúÒÑ±£´æËùÓĞ¹¤×÷£¬Ã÷È·ÖªÏşÖØÆô»á¶ªÊ§Î´±£´æÊı¾İ£¬ÈÔÒªÁ¢¼´ÖØÆô£¿"
+    $rebootPass = Confirm-ThreeTimes -Title "é‡å¯æ“ä½œç¡®è®¤" `
+        -Msg1 "å·¥å…·æ‰§è¡Œå®Œæˆå³å°†é‡å¯è®¾å¤‡ï¼Œæ‰€æœ‰æœªä¿å­˜çš„æ–‡æ¡£ã€å·¥ä½œè¿›åº¦å°†æ°¸ä¹…ä¸¢å¤±ï¼Œæ˜¯å¦ç»§ç»­ï¼Ÿ" `
+        -Msg2 "é‡å¯æ“ä½œä¼šå¼ºåˆ¶å…³é—­æ‰€æœ‰æ­£åœ¨è¿è¡Œçš„ç¨‹åºï¼Œæ²¡æœ‰ä»»ä½•æ’¤å›æœºä¼šï¼Œæ˜¯å¦ç¡®è®¤ï¼Ÿ" `
+        -Msg3 "æœ€ç»ˆç¡®è®¤ï¼šæ‚¨å·²ä¿å­˜æ‰€æœ‰å·¥ä½œï¼Œæ˜ç¡®çŸ¥æ™“é‡å¯ä¼šä¸¢å¤±æœªä¿å­˜æ•°æ®ï¼Œä»è¦ç«‹å³é‡å¯ï¼Ÿ"
     if(-not $rebootPass){
         if($autoCleanSwitch.Checked){Show-CleanupProgress}
         exit
@@ -640,20 +640,20 @@ function Show-Reboot{
     $cnt.BackColor="White"
     $cnt.TopMost=$true
     $t=New-Object System.Windows.Forms.Label
-    $t.Text="$sec Ãëµ¹¼ÆÊ±"
+    $t.Text="$sec ç§’å€’è®¡æ—¶"
     $t.Font=New-Object System.Drawing.Font("Segoe UI", 16, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Point)
     $t.Location="80,40"
     $t.AutoSize=$true
     $cnt.Controls.Add($t)
     $canc=New-Object System.Windows.Forms.Button
-    $canc.Text="È¡ÏûÖØÆô"
+    $canc.Text="å–æ¶ˆé‡å¯"
     $canc.Size="100,30"
     $canc.Location="110,100"
     $canc.Add_Click({$cnt.Tag=$true;$cnt.Close()})
     $cnt.Controls.Add($canc)
     $cnt.Tag=$false
     $cnt.Show()
-    for($i=$sec;$i -ge 0;$i--){$fill.Width=[int]($s.Width*($i/$sec));$t.Text="$i Ãëµ¹¼ÆÊ±";[System.Windows.Forms.Application]::DoEvents();if($cnt.Tag){break};Start-Sleep 1}
+    for($i=$sec;$i -ge 0;$i--){$fill.Width=[int]($s.Width*($i/$sec));$t.Text="$i ç§’å€’è®¡æ—¶";[System.Windows.Forms.Application]::DoEvents();if($cnt.Tag){break};Start-Sleep 1}
     $bar.Close();$cnt.Close()
     if(-not $cnt.Tag){
         if($autoCleanSwitch.Checked){Show-CleanupProgress}
@@ -665,67 +665,67 @@ function Show-Reboot{
 
 $steps=@{
     0=@(
-        @{p=10;n="1/10 ¼ì²âÏµÍ³Ó²¼şÅäÖÃ";c="Get-CimInstance Win32_OperatingSystem,Win32_ComputerSystem | Out-Null"},
-        @{p=20;n="2/10 À­ÂúÏÔÊ¾Æ÷×î¸ßË¢ĞÂÂÊ";c="$mon=Get-CimInstance Win32_VideoController;$max=($mon|Select-Object -Expand CurrentDisplayRefreshRate|Measure-Object -Maximum).Maximum;Set-ItemProperty 'HKCU:\Control Panel\Desktop' RefreshRate -Value $max -Force"},
-        @{p=30;n="3/10 ÇåÀíÏµÍ³ÁÙÊ±»º´æ";c="Remove-Item $env:TEMP\* -Recurse -Force -ErrorAction SilentlyContinue"},
-        @{p=40;n="4/10 ¹Ø±ÕÏµÍ³Ò£²â·şÎñ";c="Set-Service DiagTrack -StartupType Disabled -ErrorAction SilentlyContinue"},
-        @{p=50;n="5/10 ¹Ø±ÕÏµÍ³¹ã¸æÍÆËÍ";c="Set-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer' EnableStartMenuSuggestions -Value 0 -Force"},
-        @{p=60;n="6/10 Ö´ĞĞÏµÍ³ÎÄ¼şĞŞ¸´";c="Start-Job -ScriptBlock {sfc /scannow | Out-Null} | Wait-Job | Out-Null"},
-        @{p=70;n="7/10 ÓÅ»¯ÏµÍ³ÍøÂç²ÎÊı";c="netsh int tcp set global autotuninglevel=normal | Out-Null"},
-        @{p=80;n="8/10 ¹Ø±ÕÎŞÓÃ×ÔÆôÏî";c="Get-CimInstance Win32_StartupCommand | Where-Object Name -notmatch 'Windows Defender|WPS|Î¢ĞÅ' | Remove-CimInstance -ErrorAction SilentlyContinue"},
-        @{p=90;n="9/10 ÅäÖÃDefenderÉ¨ÃèCPUÏŞÖÆÎª5%";c="Set-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows Defender\Scan' AvgCPULoadFactor -Value 5 -Force"},
-        @{p=100;n="10/10 ÓÅ»¯Íê³É£¬×¼±¸ÖØÆô";c=""}
+        @{p=10;n="1/10 æ£€æµ‹ç³»ç»Ÿç¡¬ä»¶é…ç½®";c="Get-CimInstance Win32_OperatingSystem,Win32_ComputerSystem | Out-Null"},
+        @{p=20;n="2/10 æ‹‰æ»¡æ˜¾ç¤ºå™¨æœ€é«˜åˆ·æ–°ç‡";c="$mon=Get-CimInstance Win32_VideoController;$max=($mon|Select-Object -Expand CurrentDisplayRefreshRate|Measure-Object -Maximum).Maximum;Set-ItemProperty 'HKCU:\Control Panel\Desktop' RefreshRate -Value $max -Force"},
+        @{p=30;n="3/10 æ¸…ç†ç³»ç»Ÿä¸´æ—¶ç¼“å­˜";c="Remove-Item $env:TEMP\* -Recurse -Force -ErrorAction SilentlyContinue"},
+        @{p=40;n="4/10 å…³é—­ç³»ç»Ÿé¥æµ‹æœåŠ¡";c="Set-Service DiagTrack -StartupType Disabled -ErrorAction SilentlyContinue"},
+        @{p=50;n="5/10 å…³é—­ç³»ç»Ÿå¹¿å‘Šæ¨é€";c="Set-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer' EnableStartMenuSuggestions -Value 0 -Force"},
+        @{p=60;n="6/10 æ‰§è¡Œç³»ç»Ÿæ–‡ä»¶ä¿®å¤";c="Start-Job -ScriptBlock {sfc /scannow | Out-Null} | Wait-Job | Out-Null"},
+        @{p=70;n="7/10 ä¼˜åŒ–ç³»ç»Ÿç½‘ç»œå‚æ•°";c="netsh int tcp set global autotuninglevel=normal | Out-Null"},
+        @{p=80;n="8/10 å…³é—­æ— ç”¨è‡ªå¯é¡¹";c="Get-CimInstance Win32_StartupCommand | Where-Object Name -notmatch 'Windows Defender|WPS|å¾®ä¿¡' | Remove-CimInstance -ErrorAction SilentlyContinue"},
+        @{p=90;n="9/10 é…ç½®Defenderæ‰«æCPUé™åˆ¶ä¸º5%";c="Set-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows Defender\Scan' AvgCPULoadFactor -Value 5 -Force"},
+        @{p=100;n="10/10 ä¼˜åŒ–å®Œæˆï¼Œå‡†å¤‡é‡å¯";c=""}
     )
     1=@(
-        @{p=20;n="1/4 É¨ÃèËùÓĞÒÑ°²×°Èí¼ş";c="Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,UninstallString | Out-Null"},
-        @{p=40;n="2/4 ¹ıÂË°×Ãûµ¥±£ÁôÓ¦ÓÃ";c=""},
-        @{p=60;n="3/4 Ğ¶ÔØËùÓĞ°²È«Èí¼şÈ«¼ÒÍ°";c="Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object { $_.DisplayName -match '360|ÌÚÑ¶¹Ü¼Ò|Â³´óÊ¦|½ğÉ½¶¾°Ô|°Ù¶ÈÎÀÊ¿' -and $_.DisplayName -notin @('»ğÈŞ°²È«Èí¼ş','Windows Defender','»ğÈŞ') -and -not ($keepUninstall | Where-Object {$_.DisplayName -match $_}) } | ForEach-Object { if($_.UninstallString -match 'msiexec'){cmd /c "$($_.UninstallString) /x /s >$null 2>&1"}else{cmd /c "$($_.UninstallString) /s >$null 2>&1"}; Start-Sleep 3 }"},
-        @{p=80;n="4/4 ¾²Ä¬°²×°×îĞÂ°æ»ğÈŞ";c="$hrcInstall = Join-Path $SETAPP_DIR 'huorong-latest.exe';if(Test-Path $hrcInstall){Start-Process $hrcInstall /verysilent /norestart -Wait}"},
-        @{p=100;n="4/4 ÇåÀíÍê³É£¬×¼±¸ÖØÆô";c=""}
+        @{p=20;n="1/4 æ‰«ææ‰€æœ‰å·²å®‰è£…è½¯ä»¶";c="Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,UninstallString | Out-Null"},
+        @{p=40;n="2/4 è¿‡æ»¤ç™½åå•ä¿ç•™åº”ç”¨";c=""},
+        @{p=60;n="3/4 å¸è½½æ‰€æœ‰å®‰å…¨è½¯ä»¶å…¨å®¶æ¡¶";c="Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object { $_.DisplayName -match '360|è…¾è®¯ç®¡å®¶|é²å¤§å¸ˆ|é‡‘å±±æ¯’éœ¸|ç™¾åº¦å«å£«' -and $_.DisplayName -notin @('ç«ç»’å®‰å…¨è½¯ä»¶','Windows Defender','ç«ç»’') -and -not ($keepUninstall | Where-Object {$_.DisplayName -match $_}) } | ForEach-Object { if($_.UninstallString -match 'msiexec'){cmd /c "$($_.UninstallString) /x /s >$null 2>&1"}else{cmd /c "$($_.UninstallString) /s >$null 2>&1"}; Start-Sleep 3 }"},
+        @{p=80;n="4/4 é™é»˜å®‰è£…æœ€æ–°ç‰ˆç«ç»’";c="$hrcInstall = Join-Path $SETAPP_DIR 'huorong-latest.exe';if(Test-Path $hrcInstall){Start-Process $hrcInstall /verysilent /norestart -Wait}"},
+        @{p=100;n="4/4 æ¸…ç†å®Œæˆï¼Œå‡†å¤‡é‡å¯";c=""}
     )
     2=@(
-        @{p=10;n="1/10 ÇåÀíÏµÍ³ÁÙÊ±»º´æ";c="Remove-Item $env:TEMP\* -Recurse -Force -ErrorAction SilentlyContinue"},
-        @{p=20;n="2/10 ÇåÀíÏµÍ³Ô¤È¡ÎÄ¼ş";c="Remove-Item C:\Windows\Prefetch\* -Recurse -Force -ErrorAction SilentlyContinue"},
-        @{p=30;n="3/10 ÇåÀíWindowsÁÙÊ±Ä¿Â¼";c="Remove-Item C:\Windows\Temp\* -Recurse -Force -ErrorAction SilentlyContinue"},
-        @{p=40;n="4/10 ÇåÀí»ØÊÕÕ¾ËùÓĞÎÄ¼ş";c="Clear-RecycleBin -Force -ErrorAction SilentlyContinue"},
-        @{p=60;n="6/10 ĞŞ¸´ÏµÍ³ÎÄ¼şËğ»µ";c="Start-Job -ScriptBlock {sfc /scannow | Out-Null} | Wait-Job | Out-Null"},
-        @{p=70;n="7/10 ĞŞ¸´ÍøÂçÅäÖÃÒì³£";c="netsh int ip reset; netsh winsock reset | Out-Null"},
-        @{p=80;n="8/10 ÇåÀíÎŞĞ§×¢²á±íÏî";c="reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall /va /f /reg:32 >$null 2>&1"},
-        @{p=90;n="9/10 ¹Ø±ÕÎŞÓÃ×ÔÆôÏî";c="Get-CimInstance Win32_StartupCommand | Where-Object Name -notmatch 'Windows Defender|WPS|Î¢ĞÅ' | Remove-CimInstance -ErrorAction SilentlyContinue"},
-        @{p=100;n="10/10 ÇåÀíÍê³É£¬×¼±¸ÖØÆô";c=""}
+        @{p=10;n="1/10 æ¸…ç†ç³»ç»Ÿä¸´æ—¶ç¼“å­˜";c="Remove-Item $env:TEMP\* -Recurse -Force -ErrorAction SilentlyContinue"},
+        @{p=20;n="2/10 æ¸…ç†ç³»ç»Ÿé¢„å–æ–‡ä»¶";c="Remove-Item C:\Windows\Prefetch\* -Recurse -Force -ErrorAction SilentlyContinue"},
+        @{p=30;n="3/10 æ¸…ç†Windowsä¸´æ—¶ç›®å½•";c="Remove-Item C:\Windows\Temp\* -Recurse -Force -ErrorAction SilentlyContinue"},
+        @{p=40;n="4/10 æ¸…ç†å›æ”¶ç«™æ‰€æœ‰æ–‡ä»¶";c="Clear-RecycleBin -Force -ErrorAction SilentlyContinue"},
+        @{p=60;n="6/10 ä¿®å¤ç³»ç»Ÿæ–‡ä»¶æŸå";c="Start-Job -ScriptBlock {sfc /scannow | Out-Null} | Wait-Job | Out-Null"},
+        @{p=70;n="7/10 ä¿®å¤ç½‘ç»œé…ç½®å¼‚å¸¸";c="netsh int ip reset; netsh winsock reset | Out-Null"},
+        @{p=80;n="8/10 æ¸…ç†æ— æ•ˆæ³¨å†Œè¡¨é¡¹";c="reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall /va /f /reg:32 >$null 2>&1"},
+        @{p=90;n="9/10 å…³é—­æ— ç”¨è‡ªå¯é¡¹";c="Get-CimInstance Win32_StartupCommand | Where-Object Name -notmatch 'Windows Defender|WPS|å¾®ä¿¡' | Remove-CimInstance -ErrorAction SilentlyContinue"},
+        @{p=100;n="10/10 æ¸…ç†å®Œæˆï¼Œå‡†å¤‡é‡å¯";c=""}
     )
     3=@($steps[0][0..9])
     4=@($steps[0][0..9])
     5=@($steps[0][0..5] + $steps[0][7..9])
     6=@($fullSteps)
     7=@(
-        @{p=20;n="1/5 Ö´ĞĞSFCÏµÍ³É¨Ãè";c="sfc /scannow | Out-Null"},
-        @{p=40;n="2/5 ÇåÀíÁÙÊ±ÎÄ¼ş";c="Remove-Item $env:TEMP\* -Recurse -Force -ErrorAction SilentlyContinue"},
-        @{p=60;n="3/5 ¹Ø±ÕÒ£²â·şÎñ";c="Set-Service DiagTrack -StartupType Disabled"},
-        @{p=80;n="4/5 ÓÅ»¯ÍøÂç²ÎÊı";c="netsh int tcp set global autotuninglevel=normal"},
-        @{p=100;n="5/5 ĞŞ¸´Íê³É";c=""}
+        @{p=20;n="1/5 æ‰§è¡ŒSFCç³»ç»Ÿæ‰«æ";c="sfc /scannow | Out-Null"},
+        @{p=40;n="2/5 æ¸…ç†ä¸´æ—¶æ–‡ä»¶";c="Remove-Item $env:TEMP\* -Recurse -Force -ErrorAction SilentlyContinue"},
+        @{p=60;n="3/5 å…³é—­é¥æµ‹æœåŠ¡";c="Set-Service DiagTrack -StartupType Disabled"},
+        @{p=80;n="4/5 ä¼˜åŒ–ç½‘ç»œå‚æ•°";c="netsh int tcp set global autotuninglevel=normal"},
+        @{p=100;n="5/5 ä¿®å¤å®Œæˆ";c=""}
     )
     8=@(
-        @{p=20;n="1/4 ±£ÁôÏ£ÎÖºËĞÄ·şÎñ";c="Set-Service SeewoService -StartupType Automatic"},
-        @{p=40;n="2/4 ÇåÀíµÚÈı·½ÈßÓà";c="Remove-Item $env:TEMP\* -Recurse -Force"},
-        @{p=60;n="3/4 ĞŞ¸´´¥¿ØÒì³£";c="powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"},
-        @{p=100;n="4/4 ĞŞ¸´Íê³É";c=""}
+        @{p=20;n="1/4 ä¿ç•™å¸Œæ²ƒæ ¸å¿ƒæœåŠ¡";c="Set-Service SeewoService -StartupType Automatic"},
+        @{p=40;n="2/4 æ¸…ç†ç¬¬ä¸‰æ–¹å†—ä½™";c="Remove-Item $env:TEMP\* -Recurse -Force"},
+        @{p=60;n="3/4 ä¿®å¤è§¦æ§å¼‚å¸¸";c="powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"},
+        @{p=100;n="4/4 ä¿®å¤å®Œæˆ";c=""}
     )
     9=@(
-        @{p=25;n="1/4 °²×°³£ÓÃÔËĞĞ¿â";c="winget install Microsoft.VCRedist.2015+.x64 --silent"},
-        @{p=50;n="2/4 °²×°°ì¹«¹¤¾ß";c="winget install WPS.Office --silent"},
-        @{p=75;n="3/4 °²×°Ó°Òô¹¤¾ß";c="winget install ShPlayer.ShPlayer --silent"},
-        @{p=100;n="4/4 °²×°Íê³É";c=""}
+        @{p=25;n="1/4 å®‰è£…å¸¸ç”¨è¿è¡Œåº“";c="winget install Microsoft.VCRedist.2015+.x64 --silent"},
+        @{p=50;n="2/4 å®‰è£…åŠå…¬å·¥å…·";c="winget install WPS.Office --silent"},
+        @{p=75;n="3/4 å®‰è£…å½±éŸ³å·¥å…·";c="winget install ShPlayer.ShPlayer --silent"},
+        @{p=100;n="4/4 å®‰è£…å®Œæˆ";c=""}
     )
     10=@(
-        @{p=50;n="1/2 ÏÂÔØMAS¼¤»î¹¤¾ß";c="irm https://get.activated.win | iex"},
-        @{p=100;n="2/2 ¼¤»îÍê³É";c=""}
+        @{p=50;n="1/2 ä¸‹è½½MASæ¿€æ´»å·¥å…·";c="irm https://get.activated.win | iex"},
+        @{p=100;n="2/2 æ¿€æ´»å®Œæˆ";c=""}
     )
     11=@(
-        @{p=25;n="1/4 ¼ì²âÏµÍ³ÕË»§×´Ì¬";c={net user | Out-Null}},
-        @{p=50;n="2/4 Çå¿ÕAdministratorÕË»§ÃÜÂë";c={net user Administrator ""}},
-        @{p=75;n="3/4 Çå¿ÕGuestÕË»§ÃÜÂë";c={net user Guest ""}},
-        @{p=100;n="4/4 »Ö¸´ÏµÍ³°²È«±£»¤";c={
+        @{p=25;n="1/4 æ£€æµ‹ç³»ç»Ÿè´¦æˆ·çŠ¶æ€";c={net user | Out-Null}},
+        @{p=50;n="2/4 æ¸…ç©ºAdministratorè´¦æˆ·å¯†ç ";c={net user Administrator ""}},
+        @{p=75;n="3/4 æ¸…ç©ºGuestè´¦æˆ·å¯†ç ";c={net user Guest ""}},
+        @{p=100;n="4/4 æ¢å¤ç³»ç»Ÿå®‰å…¨ä¿æŠ¤";c={
             net user Administrator /active:yes
             reg add HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v LimitBlankPasswordUse /t REG_DWORD /d 1 /f >nul
         }}
@@ -739,7 +739,7 @@ $exec.Size="660,300"
 $exec.StartPosition="CenterScreen"
 $exec.FormBorderStyle="FixedDialog"
 $exec.BackColor="White"
-$exec.Text="HRC ÏµÍ³ÓÅ»¯Ö´ĞĞÖĞ V3.6"
+$exec.Text="HRC ç³»ç»Ÿä¼˜åŒ–æ‰§è¡Œä¸­ V3.6"
 $exec.Font = $globalFont
 $exec.MaximizeBox = $false
 $exec.MinimizeBox = $false
@@ -770,7 +770,7 @@ $exec.Add_Shown({
     }
     $exec.Close()
     if($sel -eq 11){
-        [System.Windows.Forms.MessageBox]::Show("ÃÜÂëÖØÖÃÍê³É£¬ÏµÍ³¿Õ°×ÃÜÂë±£»¤ÒÑ»Ö¸´", "Íê³É", "OK", "Information")
+        [System.Windows.Forms.MessageBox]::Show("å¯†ç é‡ç½®å®Œæˆï¼Œç³»ç»Ÿç©ºç™½å¯†ç ä¿æŠ¤å·²æ¢å¤", "å®Œæˆ", "OK", "Information")
         if($autoCleanSwitch.Checked){Show-CleanupProgress}
         exit
     }
