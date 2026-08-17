@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRC-tool 工具集下载</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", system-ui, sans-serif;
+        }
+        body {
+            background-color: #0b1422;
+            color: #ffffff;
+            padding: 48px 20px;
+        }
+        .container {
+            max-width: 1020px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 12px;
+            color: #40a9ff;
+        }
+        .subtitle {
+            text-align: center;
+            color: #b0c4de;
+            margin-bottom: 48px;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 26px;
+            margin-bottom: 60px;
+        }
+        .card {
+            aspect-ratio: 1 / 1;
+            background: #17253a;
+            border: 1px solid #273b58;
+            border-radius: 14px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: 0.24s ease;
+        }
+        .card:hover {
+            border-color: #40a9ff;
+            transform: translateY(-5px);
+        }
+        .card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .card p {
+            font-size: 13px;
+            color: #a0b4d0;
+            line-height:1.5;
+        }
+        .download-btn {
+            width: 100%;
+            padding: 11px 0;
+            background-color: #1874d8;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius:8px;
+            font-weight:500;
+        }
+        .download-btn:hover {
+            background-color:#0f5fb8;
+        }
+        .privacy-box {
+            background:#121e30;
+            border:1px solid #273b58;
+            border-radius:12px;
+            padding:28px;
+        }
+        .privacy-box h2{
+            color:#40a9ff;
+            margin-bottom:16px;
+            font-size:18px;
+        }
+        .privacy-box pre{
+            white-space: pre-wrap;
+            color:#c5d5ec;
+            font-size:14px;
+            line-height:1.7;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>HRC-tool 工具集下载</h1>
+    <div class="subtitle">开源Windows工具集合 - 仅用于本地设备</div>
+
+    <div class="card-grid">
+        <div class="card">
+            <div>
+                <h3>Hrc Windows tool v2.6.3.bat</h3>
+                <p>2.6.3旧版本WiFi密码查看工具</p>
+            </div>
+            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Hrc%20Windows%20tool%20v2.6.3.bat" download>下载文件</a>
+        </div>
+        <div class="card">
+            <div>
+                <h3>Hrc Windows tools v3.0.6.bat</h3>
+                <p>3.0.6版本WiFi密码查看工具</p>
+            </div>
+            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Hrc%20Windows%20tools%20v3.0.6.bat" download>下载文件</a>
+        </div>
+        <div class="card">
+            <div>
+                <h3>Hrc-tools 全套压缩包</h3>
+                <p>工具集完整zip资源包</p>
+            </div>
+            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Hrc%20windows%20tools.zip" download>下载压缩包</a>
+        </div>
+        <div class="card">
+            <div>
+                <h3>Microsoft.wav</h3>
+                <p>3.6版本配套音频文件</p>
+            </div>
+            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Microsoft.wav" download>下载音频</a>
+        </div>
+        <div class="card">
+            <div>
+                <h3>Password clean tool</h3>
+                <p>系统密码清理工具</p>
+            </div>
+            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Password%20clean%20tool" download>下载工具</a>
+        </div>
+        <div class="card">
+            <div>
+                <h3>Windows WiFi key tool.bat</h3>
+                <p>独立WiFi密码显示脚本</p>
+            </div>
+            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Windows%20%20WiFi%20key%20tool.bat" download>下载脚本</a>
+        </div>
+    </div>
+    <div class="privacy-box">
+        <h2>开源软件隐私协议</h2>
+<pre>
+【开源项目隐私声明】
+1. 本工具完全在本地Windows设备运行，不会建立外部网络连接，不会上传任何用户数据、WiFi配置、密码信息至任何服务器。
+2. 工具仅允许读取本机设备已保存的WiFi网络配置信息。
+3. 法律提示：仅允许在本人拥有所有权的设备使用。未经授权读取他人设备WiFi信息，需要自行承担全部法律责任。
+4. 本项目为开源免费软件，不收集日志、设备标识、个人隐私。所有临时缓存文件仅存放于本地C:\HRC_TempCache，工具退出可自动删除。
+5. 本工具不提供WiFi网络破解能力，仅读取系统已经保存好的网络凭证。
+</pre>
+    </div>
+</div>
+</body>
+</html>
+
