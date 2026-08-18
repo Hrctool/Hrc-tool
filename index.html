@@ -1,158 +1,579 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HRC-tool 工具集下载</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", system-ui, sans-serif;
-        }
-        body {
-            background-color: #0b1422;
-            color: #ffffff;
-            padding: 48px 20px;
-        }
-        .container {
-            max-width: 1020px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 12px;
-            color: #40a9ff;
-        }
-        .subtitle {
-            text-align: center;
-            color: #b0c4de;
-            margin-bottom: 48px;
-        }
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 26px;
-            margin-bottom: 60px;
-        }
-        .card {
-            aspect-ratio: 1 / 1;
-            background: #17253a;
-            border: 1px solid #273b58;
-            border-radius: 14px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: 0.24s ease;
-        }
-        .card:hover {
-            border-color: #40a9ff;
-            transform: translateY(-5px);
-        }
-        .card h3 {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        .card p {
-            font-size: 13px;
-            color: #a0b4d0;
-            line-height:1.5;
-        }
-        .download-btn {
-            width: 100%;
-            padding: 11px 0;
-            background-color: #1874d8;
-            color: #fff;
-            text-align: center;
-            text-decoration: none;
-            border-radius:8px;
-            font-weight:500;
-        }
-        .download-btn:hover {
-            background-color:#0f5fb8;
-        }
-        .privacy-box {
-            background:#121e30;
-            border:1px solid #273b58;
-            border-radius:12px;
-            padding:28px;
-        }
-        .privacy-box h2{
-            color:#40a9ff;
-            margin-bottom:16px;
-            font-size:18px;
-        }
-        .privacy-box pre{
-            white-space: pre-wrap;
-            color:#c5d5ec;
-            font-size:14px;
-            line-height:1.7;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRC-tool Windows脚本工具集</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: system-ui, -apple-system, "Microsoft YaHei", sans-serif;
+    color: #e8e8eb;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, rgba(88, 166, 255, 0.14), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.12), transparent 38%),
+        #070a12;
+    line-height: 1.7;
+    padding:70px 16px 40px;
+}
+.top-nav{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:100;
+    background:rgba(7,10,18,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid rgba(0,120,212,0.18);
+}
+.nav-inner{
+    max-width:1200px;
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 20px;
+}
+.nav-logo{
+    font-size:20px;
+    font-weight:bold;
+    color:#4096ff;
+}
+.nav-links{
+    display:flex;
+    gap:22px;
+}
+.nav-links a{
+    color:#c2c8d6;
+    text-decoration:none;
+    font-size:15px;
+}
+.nav-links a:hover{
+    color:#69b1ff;
+}
+.lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid rgba(0, 120, 212, 0.4);
+    border-radius: 8px;
+    cursor: pointer;
+    background: rgba(15, 22, 36, 0.6);
+}
+.lang-switch span{
+    user-select:none;
+}
+.lang-active{
+    color:#4096ff;
+    font-weight:bold;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.hero{
+    text-align:center;
+    margin-bottom:48px;
+    margin-top:20px;
+}
+.hero h1{
+    font-size:32px;
+    color:#fff;
+    margin-bottom:10px;
+}
+.hero p{
+    color:#b4bcd0;
+    max-width:700px;
+    margin:0 auto 24px;
+}
+.btn-group{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+.btn-primary{
+    background:#0078D4;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+.btn-outline{
+    background:transparent;
+    color:#c2c8d6;
+    border:1px solid rgba(0,120,212,0.4);
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+.card-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+    gap:24px;
+    margin-bottom:60px;
+}
+.tool-card{
+    aspect-ratio:1/1;
+    background:rgba(12,16,26,0.6);
+    border:1px solid rgba(88,166,255,0.16);
+    border-radius:12px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transition:0.24s;
+}
+.tool-card:hover{
+    border-color:#0078D4;
+    box-shadow:0 0 16px rgba(0,120,212,0.15);
+}
+.card-title{
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:8px;
+}
+.card-desc{
+    font-size:13px;
+    color:#a0a8bc;
+    flex-grow:1;
+}
+.card-btn{
+    width:100%;
+    margin-top:12px;
+    padding:9px;
+    border-radius:8px;
+    border:none;
+    background:#0078D4;
+    color:#fff;
+    cursor:pointer;
+}
+.star-modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.68);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:200;
+}
+.star-modal{
+    background:#0c101a;
+    border:1px solid #0078D4;
+    border-radius:14px;
+    padding:28px 32px;
+    width:90%;
+    max-width:420px;
+    animation: springPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes springPop{
+    0%{transform:scale(0.72);opacity:0;}
+    100%{transform:scale(1);opacity:1;}
+}
+.star-modal h3{
+    text-align:center;
+    margin-bottom:12px;
+}
+.star-modal p{
+    text-align:center;
+    color:#b4bcd0;
+    margin-bottom:24px;
+}
+.modal-btn-row{
+    display:flex;
+    gap:12px;
+}
+.modal-btn-row button{
+    flex:1;
+    padding:10px;
+    border-radius:8px;
+    font-size:15px;
+    cursor:pointer;
+}
+.btn-ok{
+    background:#0078D4;
+    color:white;
+    border:none;
+}
+.btn-cancel{
+    background:transparent;
+    color:#ccc;
+    border:1px solid #444;
+}
+.privacy-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.75);
+    display:none;
+    z-index:220;
+    overflow-y:auto;
+    padding:40px 14px;
+}
+.privacy-box{
+    max-width:680px;
+    margin:0 auto;
+    background:#0c101a;
+    border:1px solid #0078D4;
+    border-radius:12px;
+    padding:26px;
+}
+.privacy-box h2{
+    text-align:center;
+    margin-bottom:16px;
+    color:#ffffff;
+}
+.privacy-content{
+    font-size:14px;
+    color:#d0d4e0;
+    line-height:1.8;
+}
+.privacy-close{
+    float:right;
+    background:none;
+    border:none;
+    color:#aaa;
+    font-size:24px;
+    cursor:pointer;
+}
+.faq-wrap{
+    max-width:860px;
+    margin:0 auto 60px;
+}
+.faq-item{
+    background:rgba(12,16,26,0.55);
+    border:1px solid rgba(0,120,212,0.14);
+    border-radius:10px;
+    padding:16px 20px;
+    margin-bottom:14px;
+}
+.faq-q{
+    font-weight:600;
+    margin-bottom:6px;
+}
+.faq-a{
+    color:#b4bcd0;
+    font-size:14px;
+}
+footer{
+    text-align:center;
+    padding-top:30px;
+    border-top:1px solid rgba(255,255,255,0.07);
+    color:#8892a0;
+    font-size:14px;
+}
+footer a{
+    color:#69b1ff;
+    text-decoration:none;
+    margin:0 8px;
+    cursor:pointer;
+}
+.detail-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.72);
+    display:none;
+    z-index:150;
+    overflow-y:auto;
+    padding:40px 12px;
+}
+.detail-box{
+    max-width:620px;
+    margin:0 auto;
+    background:#0c101a;
+    border:1px solid #0078D4;
+    border-radius:12px;
+    padding:24px;
+}
+.close-detail{
+    float:right;
+    background:none;
+    border:none;
+    color:#aaa;
+    font-size:22px;
+    cursor:pointer;
+}
+</style>
 </head>
 <body>
-<div class="container">
-    <h1>HRC-tool 工具集下载</h1>
-    <div class="subtitle">开源Windows工具集合 - 仅用于本地设备</div>
-
-    <div class="card-grid">
-        <div class="card">
-            <div>
-                <h3>Hrc Windows tool v2.6.3.bat</h3>
-                <p>2.6.3旧版本WiFi密码查看工具</p>
-            </div>
-            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Hrc%20Windows%20tool%20v2.6.3.bat" download>下载文件</a>
+<div class="top-nav">
+    <div class="nav-inner">
+        <div class="nav-logo">HRC-TOOL</div>
+        <div class="nav-links">
+            <a href="#home">首页</a>
+            <a href="#tools">工具列表</a>
+            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool">GitHub仓库</a>
+            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool/issues/new">有问题，向作者反馈</a>
+            <a href="#faq">FAQ</a>
         </div>
-        <div class="card">
-            <div>
-                <h3>Hrc Windows tools v3.0.6.bat</h3>
-                <p>3.0.6版本WiFi密码查看工具</p>
-            </div>
-            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Hrc%20Windows%20tools%20v3.0.6.bat" download>下载文件</a>
+        <div class="lang-switch" id="langBtn">
+            <span class="lang-active" data-lang="zh">中文</span>
+            <span data-lang="en">EN</span>
         </div>
-        <div class="card">
-            <div>
-                <h3>Hrc-tools 全套压缩包</h3>
-                <p>工具集完整zip资源包</p>
-            </div>
-            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Hrc%20windows%20tools.zip" download>下载压缩包</a>
-        </div>
-        <div class="card">
-            <div>
-                <h3>Microsoft.wav</h3>
-                <p>3.6版本配套音频文件</p>
-            </div>
-            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Microsoft.wav" download>下载音频</a>
-        </div>
-        <div class="card">
-            <div>
-                <h3>Password clean tool</h3>
-                <p>系统密码清理工具</p>
-            </div>
-            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Password%20clean%20tool" download>下载工具</a>
-        </div>
-        <div class="card">
-            <div>
-                <h3>Windows WiFi key tool.bat</h3>
-                <p>独立WiFi密码显示脚本</p>
-            </div>
-            <a class="download-btn" href="https://github.com/Hrctool/Hrc-tool/raw/refs/heads/main/Windows%20%20WiFi%20key%20tool.bat" download>下载脚本</a>
-        </div>
-    </div>
-    <div class="privacy-box">
-        <h2>开源软件隐私协议</h2>
-<pre>
-【开源项目隐私声明】
-1. 本工具完全在本地Windows设备运行，不会建立外部网络连接，不会上传任何用户数据、WiFi配置、密码信息至任何服务器。
-2. 工具仅允许读取本机设备已保存的WiFi网络配置信息。
-3. 法律提示：仅允许在本人拥有所有权的设备使用。未经授权读取他人设备WiFi信息，需要自行承担全部法律责任。
-4. 本项目为开源免费软件，不收集日志、设备标识、个人隐私。所有临时缓存文件仅存放于本地C:\HRC_TempCache，工具退出可自动删除。
-5. 本工具不提供WiFi网络破解能力，仅读取系统已经保存好的网络凭证
-</pre>
     </div>
 </div>
+
+<div class="container" id="home">
+    <div class="hero">
+        <h1 data-zh="HRC-tool Windows脚本工具集" data-en="HRC-tool Windows Script Tools">HRC-tool Windows脚本工具集</h1>
+        <p data-zh="开源Windows批处理工具箱，系统优化、密码重置、WiFi密码查看等工具。" data-en="Open source Windows batch toolbox, including system optimization, password reset, WiFi password viewer.">开源Windows批处理工具箱，系统优化、密码重置、WiFi密码查看等工具。</p>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20windows%E5%B7%A5%E5%85%B7/Hrc%20windows%E5%B7%A5%E5%85%B7.zip');openStarModal()" data-zh="下载全套ZIP工具包" data-en="Download full ZIP package">下载全套ZIP工具包</button>
+            <button class="btn-outline" onclick="window.open('https://github.com/Hrctool/Hrc-tool','_blank')" data-zh="GitHub仓库" data-en="GitHub Repo">GitHub仓库</button>
+            <button class="btn-outline" onclick="window.open('https://github.com/Hrctool/Hrc-tool/issues/new','_blank')" data-zh="有问题，向作者反馈" data-en="Report issue">有问题，向作者反馈</button>
+        </div>
+    </div>
+
+    <section id="tools">
+        <div class="card-grid">
+            <div class="tool-card">
+                <div>
+                    <div class="card-title" data-zh="密码清除工具" data-en="Password Reset Tool">密码清除工具</div>
+                    <div class="card-desc" data-zh="Windows账户密码重置清空脚本" data-en="Reset Windows user password">Windows账户密码重置清空脚本</div>
+                </div>
+                <button class="card-btn" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20windows%E5%B7%A5%E5%85%B7/%E5%AF%86%E7%A0%81%E6%B8%85%E9%99%A4%E5%B7%A5%E5%85%B7.bat');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
+            </div>
+            <div class="tool-card">
+                <div>
+                    <div class="card-title" data-zh="系统优化3.0（推荐）" data-en="System Optimize 3.0 (Recommended)">系统优化3.0（推荐）</div>
+                    <div class="card-desc" data-zh="系统清理、性能优化无bug版本" data-en="System clean & performance optimize">系统清理、性能优化无bug版本</div>
+                </div>
+                <button class="card-btn" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20windows%E5%B7%A5%E5%85%B7/(%E6%9C%80%E6%8E%A8%E8%8D%90)%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC%E6%97%A0bug3.0%E7%89%88.bat');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
+            </div>
+            <div class="tool-card">
+                <div>
+                    <div class="card-title" data-zh="v2发布版" data-en="v2 Release">v2发布版</div>
+                    <div class="card-desc" data-zh="旧版优化脚本v2" data-en="Old optimize script v2">旧版优化脚本v2</div>
+                </div>
+                <button class="card-btn" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20windows%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E5%8F%91%E5%B8%83%E7%89%88v2.bat');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
+            </div>
+            <div class="tool-card">
+                <div>
+                    <div class="card-title" data-zh="优化脚本2.0(不推荐)" data-en="Optimize 2.0(Not Recommended)">优化脚本2.0(不推荐)</div>
+                    <div class="card-desc" data-zh="老旧版本，不建议使用" data-en="Old version, not recommended">老旧版本，不建议使用</div>
+                </div>
+                <button class="card-btn" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20windows%E5%B7%A5%E5%85%B7/(%E4%B8%8D%E5%A4%AA%E6%8E%A8%E8%8D%90)%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC%E6%97%A0bug2.0%E7%89%88.bat');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
+            </div>
+            <div class="tool-card">
+                <div>
+                    <div class="card-title" data-zh="v3.0.6主程序" data-en="v3.0.6 Main Program">v3.0.6主程序</div>
+                    <div class="card-desc" data-zh="新版主工具，附带音频文件一起下载" data-en="New main tool, includes audio file">新版主工具，附带音频文件一起下载</div>
+                </div>
+                <button class="card-btn" onclick="setDownloadDouble('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20Windows%20tools%20v3.0.6.bat','https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Microsoft.wav');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
+            </div>
+            <div class="tool-card">
+                <div>
+                    <div class="card-title" data-zh="WiFi密码查看工具" data-en="WiFi Password Viewer">WiFi密码查看工具</div>
+                    <div class="card-desc" data-zh="读取本机保存的WiFi密码" data-en="Read saved WiFi passwords">读取本机保存的WiFi密码</div>
+                </div>
+                <button class="card-btn" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Windows%20%20WiFi%20key%20tool.bat');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
+            </div>
+            <div class="tool-card">
+                <div>
+                    <div class="card-title" data-zh="VC++运行库" data-en="VC++ Runtime">VC++运行库</div>
+                    <div class="card-desc" data-zh="微软官方VC++2015-2022运行库" data-en="Official VC++2015-2022 runtime">微软官方VC++2015-2022运行库</div>
+                </div>
+                <button class="card-btn" onclick="window.open('https://aka.ms/vc14/vc_redist.x64.exe','_blank')" data-zh="前往下载" data-en="Go Download">前往下载</button>
+            </div>
+            <div class="tool-card">
+                <div>
+                    <div class="card-title" data-zh="DirectX DLL修复" data-en="DirectX DLL Repair">DirectX DLL修复</div>
+                    <div class="card-desc" data-zh="DirectX修复工具，修复DLL缺失" data-en="Fix missing DLL files">DirectX修复工具，修复DLL缺失</div>
+                </div>
+                <button class="card-btn" onclick="window.open('https://www.directxrepair.com/download.html','_blank')" data-zh="前往下载" data-en="Go Download">前往下载</button>
+            </div>
+            <div class="tool-card">
+                <div>
+                    <div class="card-title" data-zh="关机快捷方式工具" data-en="Shutdown Shortcut Tool">关机快捷方式工具</div>
+                    <div class="card-desc" data-zh="一键生成关机桌面快捷方式" data-en="Create shutdown desktop shortcut">一键生成关机桌面快捷方式</div>
+                </div>
+                <button class="card-btn" onclick="window.open('https://wwbkz.lanzout.com/iWdXh3rljoza','_blank')" data-zh="前往下载" data-en="Go Download">前往下载</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq-wrap">
+        <div class="faq-item">
+            <div class="faq-q">问题1：点下载，浏览器直接打开源码文本，不弹出保存文件？</div>
+            <div class="faq-a">
+解决方法：<br>
+1. 鼠标放到下载按钮上面，不要点击；<br>
+2. 鼠标右键，选择【另存为】；<br>
+3. 保存类型选【所有文件】，文件名结尾写上 .bat；<br>
+4. 编码保持默认，保存到桌面即可。
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">问题2：双击bat脚本，黑框一闪直接消失，打不开？</div>
+            <div class="faq-a">
+解决方法：<br>
+1. 找到下载好的bat文件；<br>
+2. 鼠标右键这个文件；<br>
+3. 点【以管理员身份运行】；<br>
+4. 不要直接双击，权限不够就会闪退。
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">问题3：杀毒软件/Windows Defender直接把脚本删掉？</div>
+            <div class="faq-a">
+解决方法：<br>
+1. Windows安全中心 → 病毒和威胁防护；<br>
+2. 找到【保护历史记录】，把被隔离的bat文件恢复；<br>
+3. 添加排除项，把存放脚本的文件夹加入白名单；<br>
+注意：脚本修改系统设置，会被杀毒误报，确认来源再放行。
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">问题4：打开bat脚本里面中文全部乱码？</div>
+            <div class="faq-a">
+解决方法：<br>
+1. 不要用WPS记事本保存bat；<br>
+2. 使用系统自带记事本打开脚本；<br>
+3. 文件 → 另存为，编码选择【UTF-8】，覆盖保存。
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">问题5：下载完，看不到 .bat后缀，只有文件名？</div>
+            <div class="faq-a">
+解决方法：<br>
+1. 打开此电脑，顶部点【查看】；<br>
+2. 勾选【文件扩展名】；<br>
+3. 现在就能看到 .bat后缀，修改文件名不会把后缀弄丢。
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>HRC-TOOL © 2026 MIT License</p>
+        <p>
+            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool">GitHub仓库</a>
+            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool/issues/new">提交反馈</a>
+            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool/stargazers">给项目点Star</a>
+            <a onclick="openPrivacy()">隐私协议</a>
+            <a target="_blank" href="https://www.doubao.com">不会用？去问问 AI</a>
+        </p>
+    </footer>
+</div>
+
+<div class="star-modal-overlay" id="starOverlay">
+    <div class="star-modal">
+        <h3>⭐ 给个Star吧</h3>
+        <p>工具对你有用，欢迎点Star支持项目！</p>
+        <div class="modal-btn-row">
+            <button class="btn-ok" onclick="goStar()">前往Star页面</button>
+            <button class="btn-cancel" onclick="closeStarModal()">取消，继续下载</button>
+        </div>
+    </div>
+</div>
+
+<div class="privacy-overlay" id="privacyOverlay">
+    <div class="privacy-box">
+        <button class="privacy-close" onclick="closePrivacy()">×</button>
+        <h2>隐私协议</h2>
+        <div class="privacy-content">
+<p>更新日期：2026-08-18</p>
+<br>
+<p><strong>概述</strong></p>
+<p>HRC‑tool 是开源免费Windows批处理脚本工具集。本站为纯静态HTML网页。<br>
+本项目自身代码<strong>不包含任何统计、埋点、上报、广告追踪脚本，不会主动收集、读取、上传你的任何个人信息</strong>。</p>
+<br>
+<p><strong>第三方服务商说明</strong></p>
+<p>网站托管在 GitHub Pages，下载加速使用 jsDelivr CDN。<br>
+当你访问网页、下载文件时，GitHub、jsDelivr这些第三方服务商，会在网络底层生成访问日志（包含IP、浏览器标识、访问时间）。<br>
+<strong>该行为属于第三方平台网络服务行为，不是HRC‑tool项目代码主动采集你的信息。</strong></p>
+<br>
+<p><strong>本项目不会执行的行为</strong></p>
+<ul style="padding-left:20px;">
+<li>网页不会采集IP、设备信息、浏览记录；</li>
+<li>没有追踪Cookie，没有用户表单，不收集任何输入信息；</li>
+<li>网页本身不会向外发送任何用户数据；</li>
+<li>项目发布的bat脚本，不会偷偷上传你的本地隐私文件。</li>
+</ul>
+<br>
+<p><strong>外部第三方工具提示</strong></p>
+<p>页面中部分工具跳转至外部网站下载，外部网站的隐私政策由对方平台负责，与本项目无关。</p>
+<br>
+<p><strong>开源许可</strong></p>
+<p>本项目全部代码基于MIT开源协议开放。</p>
+        </div>
+    </div>
+</div>
+
+<script>
+const starOverlay = document.getElementById("starOverlay");
+const privacyOverlay = document.getElementById("privacyOverlay");
+
+let downloadType = "single";
+let url1 = "";
+let url2 = "";
+
+function setDownloadSingle(u){
+    downloadType = "single";
+    url1 = u;
+}
+function setDownloadDouble(uA,uB){
+    downloadType = "double";
+    url1 = uA;
+    url2 = uB;
+}
+
+function openStarModal(){
+    starOverlay.style.display="flex";
+}
+function closeStarModal(){
+    starOverlay.style.display="none";
+    if(downloadType === "single" && url1){
+        window.location.href = url1;
+    }else if(downloadType === "double"){
+        const a1 = document.createElement('a');
+        a1.href = url1;
+        a1.click();
+        setTimeout(()=>{
+            const a2 = document.createElement('a');
+            a2.href = url2;
+            a2.click();
+        },300);
+    }
+}
+function goStar(){
+    window.open("https://github.com/Hrctool/Hrc-tool/stargazers","_blank");
+    closeStarModal();
+}
+starOverlay.addEventListener("click",e=>{
+    if(e.target === starOverlay) closeStarModal();
+})
+
+function openPrivacy(){
+    privacyOverlay.style.display="block";
+}
+function closePrivacy(){
+    privacyOverlay.style.display="none";
+}
+privacyOverlay.addEventListener("click",e=>{
+    if(e.target === privacyOverlay) closePrivacy();
+})
+
+//中英文切换
+let currentLang = "zh";
+const langBtn = document.getElementById("langBtn");
+langBtn.addEventListener("click",()=>{
+    currentLang = currentLang === "zh" ? "en" : "zh";
+    document.querySelectorAll('[data-lang]').forEach(el=>{
+        const t = el.getAttribute(`data-${currentLang}`);
+        if(t) el.innerText = t;
+    })
+    document.querySelectorAll('.lang-switch span').forEach(s=>{
+        s.classList.remove('lang-active');
+        if(s.dataset.lang === currentLang) s.classList.add('lang-active');
+    })
+    document.documentElement.lang = currentLang;
+})
+</script>
 </body>
 </html>
-
