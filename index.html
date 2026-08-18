@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HRC-tool Windows脚本工具集</title>
+<title>HRC‑tool Windows脚本工具集</title>
 <style>
 * {
     margin: 0;
@@ -73,6 +73,8 @@ body {
     color:#4096ff;
     font-weight:bold;
 }
+.lang-zh{display:block;}
+.lang-en{display:none;}
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -274,42 +276,22 @@ footer a{
     margin:0 8px;
     cursor:pointer;
 }
-.detail-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.72);
-    display:none;
-    z-index:150;
-    overflow-y:auto;
-    padding:40px 12px;
-}
-.detail-box{
-    max-width:620px;
-    margin:0 auto;
-    background:#0c101a;
-    border:1px solid #0078D4;
-    border-radius:12px;
-    padding:24px;
-}
-.close-detail{
-    float:right;
-    background:none;
-    border:none;
-    color:#aaa;
-    font-size:22px;
-    cursor:pointer;
+.warning-text{
+    color:#ffb84d;
+    font-size:13px;
+    margin-top:6px;
 }
 </style>
 </head>
 <body>
 <div class="top-nav">
     <div class="nav-inner">
-        <div class="nav-logo">HRC-TOOL</div>
+        <div class="nav-logo">HRC‑TOOL</div>
         <div class="nav-links">
-            <a href="#home">首页</a>
-            <a href="#tools">工具列表</a>
-            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool">GitHub仓库</a>
-            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool/issues/new">有问题，向作者反馈</a>
+            <a href="#home"><span class="lang-zh">首页</span><span class="lang-en">Home</span></a>
+            <a href="#tools"><span class="lang-zh">工具列表</span><span class="lang-en">Tools</span></a>
+            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool">GitHub</a>
+            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool/issues/new"><span class="lang-zh">问题反馈</span><span class="lang-en">Report Issue</span></a>
             <a href="#faq">FAQ</a>
         </div>
         <div class="lang-switch" id="langBtn">
@@ -321,12 +303,26 @@ footer a{
 
 <div class="container" id="home">
     <div class="hero">
-        <h1 data-zh="HRC-tool Windows脚本工具集" data-en="HRC-tool Windows Script Tools">HRC-tool Windows脚本工具集</h1>
-        <p data-zh="开源Windows批处理工具箱，系统优化、密码重置、WiFi密码查看等工具。" data-en="Open source Windows batch toolbox, including system optimization, password reset, WiFi password viewer.">开源Windows批处理工具箱，系统优化、密码重置、WiFi密码查看等工具。</p>
+        <h1><span class="lang-zh">HRC‑tool Windows脚本工具集</span><span class="lang-en">HRC‑tool Windows Script Tools</span></h1>
+        <p>
+            <span class="lang-zh">开源Windows批处理工具箱，系统优化、密码重置、WiFi密码查看等工具。</span>
+            <span class="lang-en">Open‑source Windows batch toolbox, includes system optimize, password reset, WiFi password viewer.</span>
+        </p>
+        <div class="warning-text">⚠️ <span class="lang-zh">线上GitHub Pages访问才支持一键下载</span><span class="lang-en">One‑click download works only on GitHub Pages online</span></div>
+
         <div class="btn-group">
-            <button class="btn-primary" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20windows%E5%B7%A5%E5%85%B7/Hrc%20windows%E5%B7%A5%E5%85%B7.zip');openStarModal()" data-zh="下载全套ZIP工具包" data-en="Download full ZIP package">下载全套ZIP工具包</button>
-            <button class="btn-outline" onclick="window.open('https://github.com/Hrctool/Hrc-tool','_blank')" data-zh="GitHub仓库" data-en="GitHub Repo">GitHub仓库</button>
-            <button class="btn-outline" onclick="window.open('https://github.com/Hrctool/Hrc-tool/issues/new','_blank')" data-zh="有问题，向作者反馈" data-en="Report issue">有问题，向作者反馈</button>
+            <button class="btn-primary" onclick="openStarModal('./Hrc%20windows%E5%B7%A5%E5%85%B7/Hrc%20windows%E5%B7%A5%E5%85%B7.zip','Hrc windows工具.zip')">
+                <span class="lang-zh">下载全套ZIP工具包</span>
+                <span class="lang-en">Download full ZIP package</span>
+            </button>
+            <button class="btn-outline" onclick="window.open('https://github.com/Hrctool/Hrc-tool','_blank')">
+                <span class="lang-zh">GitHub仓库</span>
+                <span class="lang-en">GitHub Repo</span>
+            </button>
+            <button class="btn-outline" onclick="window.open('https://github.com/Hrctool/Hrc-tool/issues/new','_blank')">
+                <span class="lang-zh">有问题，向作者反馈</span>
+                <span class="lang-en">Report issue</span>
+            </button>
         </div>
     </div>
 
@@ -334,140 +330,146 @@ footer a{
         <div class="card-grid">
             <div class="tool-card">
                 <div>
-                    <div class="card-title" data-zh="密码清除工具" data-en="Password Reset Tool">密码清除工具</div>
-                    <div class="card-desc" data-zh="Windows账户密码重置清空脚本" data-en="Reset Windows user password">Windows账户密码重置清空脚本</div>
+                    <div class="card-title">
+                        <span class="lang-zh">密码清除工具</span>
+                        <span class="lang-en">Password Reset Tool</span>
+                    </div>
+                    <div class="card-desc">
+                        <span class="lang-zh">Windows账户密码重置清空脚本</span>
+                        <span class="lang-en">Reset & clear Windows user password</span>
+                    </div>
                 </div>
-                <button class="card-btn" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20windows%E5%B7%A5%E5%85%B7/%E5%AF%86%E7%A0%81%E6%B8%85%E9%99%A4%E5%B7%A5%E5%85%B7.bat');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
+                <button class="card-btn" onclick="openStarModal('./Hrc%20windows%E5%B7%A5%E5%85%B7/%E5%AF%86%E7%A0%81%E6%B8%85%E9%99%A4%E5%B7%A5%E5%85%B7.bat','密码清除工具.bat')">
+                    <span class="lang-zh">下载脚本</span>
+                    <span class="lang-en">Download Script</span>
+                </button>
             </div>
+
             <div class="tool-card">
                 <div>
-                    <div class="card-title" data-zh="系统优化3.0（推荐）" data-en="System Optimize 3.0 (Recommended)">系统优化3.0（推荐）</div>
-                    <div class="card-desc" data-zh="系统清理、性能优化无bug版本" data-en="System clean & performance optimize">系统清理、性能优化无bug版本</div>
+                    <div class="card-title">
+                        <span class="lang-zh">系统优化3.0（推荐）</span>
+                        <span class="lang-en">System Optimize 3.0 (Recommended)</span>
+                    </div>
+                    <div class="card-desc">
+                        <span class="lang-zh">系统清理、性能优化无bug版本</span>
+                        <span class="lang-en">Bug‑free system clean & performance optimize</span>
+                    </div>
                 </div>
-                <button class="card-btn" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20windows%E5%B7%A5%E5%85%B7/(%E6%9C%80%E6%8E%A8%E8%8D%90)%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC%E6%97%A0bug3.0%E7%89%88.bat');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
+                <button class="card-btn" onclick="openStarModal('./Hrc%20windows%E5%B7%A5%E5%85%B7/(%E6%9C%80%E6%8E%A8%E8%8D%90)%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC%E6%97%A0bug3.0%E7%89%88.bat','系统优化3.0.bat')">
+                    <span class="lang-zh">下载脚本</span>
+                    <span class="lang-en">Download Script</span>
+                </button>
             </div>
+
             <div class="tool-card">
                 <div>
-                    <div class="card-title" data-zh="v2发布版" data-en="v2 Release">v2发布版</div>
-                    <div class="card-desc" data-zh="旧版优化脚本v2" data-en="Old optimize script v2">旧版优化脚本v2</div>
+                    <div class="card-title">
+                        <span class="lang-zh">v2发布版</span>
+                        <span class="lang-en">v2 Release</span>
+                    </div>
+                    <div class="card-desc">
+                        <span class="lang-zh">旧版优化脚本v2</span>
+                        <span class="lang-en">Old optimize script v2</span>
+                    </div>
                 </div>
-                <button class="card-btn" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20windows%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E5%8F%91%E5%B8%83%E7%89%88v2.bat');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
+                <button class="card-btn" onclick="openStarModal('./Hrc%20windows%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E5%8F%91%E5%B8%83%E7%89%88v2.bat','工具发布版v2.bat')">
+                    <span class="lang-zh">下载脚本</span>
+                    <span class="lang-en">Download Script</span>
+                </button>
             </div>
+
             <div class="tool-card">
                 <div>
-                    <div class="card-title" data-zh="优化脚本2.0(不推荐)" data-en="Optimize 2.0(Not Recommended)">优化脚本2.0(不推荐)</div>
-                    <div class="card-desc" data-zh="老旧版本，不建议使用" data-en="Old version, not recommended">老旧版本，不建议使用</div>
+                    <div class="card-title">
+                        <span class="lang-zh">优化脚本2.0(不推荐)</span>
+                        <span class="lang-en">Optimize 2.0(Not Recommended)</span>
+                    </div>
+                    <div class="card-desc">
+                        <span class="lang-zh">老旧版本，不建议使用</span>
+                        <span class="lang-en">Legacy version, not recommended</span>
+                    </div>
                 </div>
-                <button class="card-btn" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20windows%E5%B7%A5%E5%85%B7/(%E4%B8%8D%E5%A4%AA%E6%8E%A8%E8%8D%90)%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC%E6%97%A0bug2.0%E7%89%88.bat');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
+                <button class="card-btn" onclick="openStarModal('./Hrc%20windows%E5%B7%A5%E5%85%B7/(%E4%B8%8D%E5%A4%AA%E6%8E%A8%E8%8D%90)%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC%E6%97%A0bug2.0%E7%89%88.bat','优化脚本2.0.bat')">
+                    <span class="lang-zh">下载脚本</span>
+                    <span class="lang-en">Download Script</span>
+                </button>
             </div>
+
             <div class="tool-card">
                 <div>
-                    <div class="card-title" data-zh="v3.0.6主程序" data-en="v3.0.6 Main Program">v3.0.6主程序</div>
-                    <div class="card-desc" data-zh="新版主工具，附带音频文件一起下载" data-en="New main tool, includes audio file">新版主工具，附带音频文件一起下载</div>
+                    <div class="card-title">
+                        <span class="lang-zh">WiFi密码查看工具</span>
+                        <span class="lang-en">WiFi Password Viewer</span>
+                    </div>
+                    <div class="card-desc">
+                        <span class="lang-zh">读取本机保存的WiFi密码</span>
+                        <span class="lang-en">Read locally‑saved WiFi passwords</span>
+                    </div>
                 </div>
-                <button class="card-btn" onclick="setDownloadDouble('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Hrc%20Windows%20tools%20v3.0.6.bat','https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Microsoft.wav');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
-            </div>
-            <div class="tool-card">
-                <div>
-                    <div class="card-title" data-zh="WiFi密码查看工具" data-en="WiFi Password Viewer">WiFi密码查看工具</div>
-                    <div class="card-desc" data-zh="读取本机保存的WiFi密码" data-en="Read saved WiFi passwords">读取本机保存的WiFi密码</div>
-                </div>
-                <button class="card-btn" onclick="setDownloadSingle('https://cdn.jsdelivr.net/gh/Hrctool/Hrc-tool@main/Windows%20%20WiFi%20key%20tool.bat');openStarModal()" data-zh="下载脚本" data-en="Download Script">下载脚本</button>
-            </div>
-            <div class="tool-card">
-                <div>
-                    <div class="card-title" data-zh="VC++运行库" data-en="VC++ Runtime">VC++运行库</div>
-                    <div class="card-desc" data-zh="微软官方VC++2015-2022运行库" data-en="Official VC++2015-2022 runtime">微软官方VC++2015-2022运行库</div>
-                </div>
-                <button class="card-btn" onclick="window.open('https://aka.ms/vc14/vc_redist.x64.exe','_blank')" data-zh="前往下载" data-en="Go Download">前往下载</button>
-            </div>
-            <div class="tool-card">
-                <div>
-                    <div class="card-title" data-zh="DirectX DLL修复" data-en="DirectX DLL Repair">DirectX DLL修复</div>
-                    <div class="card-desc" data-zh="DirectX修复工具，修复DLL缺失" data-en="Fix missing DLL files">DirectX修复工具，修复DLL缺失</div>
-                </div>
-                <button class="card-btn" onclick="window.open('https://www.directxrepair.com/download.html','_blank')" data-zh="前往下载" data-en="Go Download">前往下载</button>
-            </div>
-            <div class="tool-card">
-                <div>
-                    <div class="card-title" data-zh="关机快捷方式工具" data-en="Shutdown Shortcut Tool">关机快捷方式工具</div>
-                    <div class="card-desc" data-zh="一键生成关机桌面快捷方式" data-en="Create shutdown desktop shortcut">一键生成关机桌面快捷方式</div>
-                </div>
-                <button class="card-btn" onclick="window.open('https://wwbkz.lanzout.com/iWdXh3rljoza','_blank')" data-zh="前往下载" data-en="Go Download">前往下载</button>
+                <button class="card-btn" onclick="openStarModal('./Windows%20%20WiFi%20key%20tool.bat','WiFi密码查看工具.bat')">
+                    <span class="lang-zh">下载脚本</span>
+                    <span class="lang-en">Download Script</span>
+                </button>
             </div>
         </div>
     </section>
 
     <section id="faq" class="faq-wrap">
         <div class="faq-item">
-            <div class="faq-q">问题1：点下载，浏览器直接打开源码文本，不弹出保存文件？</div>
+            <div class="faq-q">
+                <span class="lang-zh">问题1：本地打开网页下载失效？</span>
+                <span class="lang-en">Q1: Download does not work when open local file?</span>
+            </div>
             <div class="faq-a">
-解决方法：<br>
-1. 鼠标放到下载按钮上面，不要点击；<br>
-2. 鼠标右键，选择【另存为】；<br>
-3. 保存类型选【所有文件】，文件名结尾写上 .bat；<br>
-4. 编码保持默认，保存到桌面即可。
+                <span class="lang-zh">本下载功能依赖GitHub Pages线上环境，本地双击HTML会触发浏览器跨域限制，必须访问部署后的网页链接才能一键下载。</span>
+                <span class="lang-en">Download requires GitHub Pages online environment. Local HTML file triggers browser CORS restriction, use deployed website link for one‑click download.</span>
             </div>
         </div>
         <div class="faq-item">
-            <div class="faq-q">问题2：双击bat脚本，黑框一闪直接消失，打不开？</div>
+            <div class="faq-q">
+                <span class="lang-zh">问题2：双击bat脚本黑框一闪消失？</span>
+                <span class="lang-en">Q2: Bat script flashes and closes immediately?</span>
+            </div>
             <div class="faq-a">
-解决方法：<br>
-1. 找到下载好的bat文件；<br>
-2. 鼠标右键这个文件；<br>
-3. 点【以管理员身份运行】；<br>
-4. 不要直接双击，权限不够就会闪退。
+                <span class="lang-zh">右键脚本，选择【以管理员身份运行】，不要直接双击打开。</span>
+                <span class="lang-en">Right‑click script → Run as administrator, do not double‑click directly.</span>
             </div>
         </div>
         <div class="faq-item">
-            <div class="faq-q">问题3：杀毒软件/Windows Defender直接把脚本删掉？</div>
-            <div class="faq-a">
-解决方法：<br>
-1. Windows安全中心 → 病毒和威胁防护；<br>
-2. 找到【保护历史记录】，把被隔离的bat文件恢复；<br>
-3. 添加排除项，把存放脚本的文件夹加入白名单；<br>
-注意：脚本修改系统设置，会被杀毒误报，确认来源再放行。
+            <div class="faq-q">
+                <span class="lang-zh">问题3：杀毒软件删除脚本？</span>
+                <span class="lang-en">Q3: Antivirus deletes script?</span>
             </div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-q">问题4：打开bat脚本里面中文全部乱码？</div>
             <div class="faq-a">
-解决方法：<br>
-1. 不要用WPS记事本保存bat；<br>
-2. 使用系统自带记事本打开脚本；<br>
-3. 文件 → 另存为，编码选择【UTF-8】，覆盖保存。
-            </div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-q">问题5：下载完，看不到 .bat后缀，只有文件名？</div>
-            <div class="faq-a">
-解决方法：<br>
-1. 打开此电脑，顶部点【查看】；<br>
-2. 勾选【文件扩展名】；<br>
-3. 现在就能看到 .bat后缀，修改文件名不会把后缀弄丢。
+                <span class="lang-zh">脚本修改系统权限，会产生误报，在Windows安全中心恢复文件并添加文件夹白名单。</span>
+                <span class="lang-en">Scripts modify system permissions, causing false positives. Restore file in Windows Security and add folder to whitelist.</span>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>HRC-TOOL © 2026 MIT License</p>
+        <p>HRC‑TOOL © 2026 MIT License</p>
         <p>
-            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool">GitHub仓库</a>
-            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool/issues/new">提交反馈</a>
-            <a target="_blank" href="https://github.com/Hrctool/Hrc-tool/stargazers">给项目点Star</a>
-            <a onclick="openPrivacy()">隐私协议</a>
-            <a target="_blank" href="https://www.doubao.com">不会用？去问问 AI</a>
+            <a target="_blank" href="https://github.com/Hrctool/Hrc‑tool">GitHub仓库</a>
+            <a target="_blank" href="https://github.com/Hrctool/Hrc‑tool/issues/new"><span class="lang-zh">提交反馈</span><span class="lang-en">Feedback</span></a>
+            <a target="_blank" href="https://github.com/Hrctool/Hrc‑tool/stargazers"><span class="lang-zh">给项目点Star</span><span class="lang-en">Star this project</span></a>
+            <a onclick="openPrivacy()"><span class="lang-zh">隐私协议</span><span class="lang-en">Privacy Policy</span></a>
+            <a target="_blank" href="https://www.doubao.com"><span class="lang-zh">不会用？去问问 AI</span><span class="lang-en">Need help? Ask AI</span></a>
         </p>
     </footer>
 </div>
 
 <div class="star-modal-overlay" id="starOverlay">
     <div class="star-modal">
-        <h3>⭐ 给个Star吧</h3>
-        <p>工具对你有用，欢迎点Star支持项目！</p>
+        <h3><span class="lang-zh">⭐ 给个Star吧</span><span class="lang-en">⭐ Please give me a Star</span></h3>
+        <p>
+            <span class="lang-zh">工具对你有用，欢迎点Star支持项目，对项目很重要！</span>
+            <span class="lang-en">If these tools help you, Star to support this project, it matters a lot!</span>
+        </p>
         <div class="modal-btn-row">
-            <button class="btn-ok" onclick="goStar()">前往Star页面</button>
-            <button class="btn-cancel" onclick="closeStarModal()">取消，继续下载</button>
+            <button class="btn-ok" onclick="goStar()"><span class="lang-zh">前往Star页面</span><span class="lang-en">Go to Star page</span></button>
+            <button class="btn-cancel" onclick="closeStarModal()"><span class="lang-zh">取消，继续下载</span><span class="lang-en">Cancel, continue download</span></button>
         </div>
     </div>
 </div>
@@ -475,32 +477,38 @@ footer a{
 <div class="privacy-overlay" id="privacyOverlay">
     <div class="privacy-box">
         <button class="privacy-close" onclick="closePrivacy()">×</button>
-        <h2>隐私协议</h2>
+        <h2><span class="lang-zh">隐私协议</span><span class="lang-en">Privacy Policy</span></h2>
         <div class="privacy-content">
-<p>更新日期：2026-08-18</p>
+<p><span class="lang-zh">更新日期：2026‑08‑18</span><span class="lang-en">Last updated: 2026‑08‑18</span></p>
 <br>
-<p><strong>概述</strong></p>
-<p>HRC‑tool 是开源免费Windows批处理脚本工具集。本站为纯静态HTML网页。<br>
-本项目自身代码<strong>不包含任何统计、埋点、上报、广告追踪脚本，不会主动收集、读取、上传你的任何个人信息</strong>。</p>
+<p><strong><span class="lang-zh">概述</span><span class="lang-en">Overview</span></strong></p>
+<p>
+<span class="lang-zh">HRC‑tool 是开源免费Windows批处理脚本工具集。本站为纯静态HTML网页。本项目自身代码不包含任何统计、埋点、上报、广告追踪脚本，不会主动收集、读取、上传你的任何个人信息。</span>
+<span class="lang-en">HRC‑tool is free open‑source Windows batch script toolset. This is a pure static HTML website. Project code contains no tracking, analytics, advertisement scripts. It will NOT collect, read or upload your personal data actively.</span>
+</p>
 <br>
-<p><strong>第三方服务商说明</strong></p>
-<p>网站托管在 GitHub Pages，下载加速使用 jsDelivr CDN。<br>
-当你访问网页、下载文件时，GitHub、jsDelivr这些第三方服务商，会在网络底层生成访问日志（包含IP、浏览器标识、访问时间）。<br>
-<strong>该行为属于第三方平台网络服务行为，不是HRC‑tool项目代码主动采集你的信息。</strong></p>
+<p><strong><span class="lang-zh">第三方服务商说明</span><span class="lang-en">Third‑party service note</span></strong></p>
+<p>
+<span class="lang-zh">网站托管在 GitHub Pages。网页全部使用仓库内部相对路径访问脚本。当你访问网页、下载文件时，GitHub Pages会生成访问日志（包含IP、浏览器标识、访问时间）。该行为属于GitHub平台网络服务行为，不是HRC‑tool项目代码主动采集你的信息。</span>
+<span class="lang-en">Site hosted on GitHub Pages. When you visit or download files, GitHub will generate access logs including IP, browser agent, access time. This is GitHub platform behavior, not collected by our project code.</span>
+</p>
 <br>
-<p><strong>本项目不会执行的行为</strong></p>
+<p><strong><span class="lang-zh">本项目不会执行的行为</span><span class="lang-en">Actions this project will NOT do</span></strong></p>
 <ul style="padding-left:20px;">
-<li>网页不会采集IP、设备信息、浏览记录；</li>
-<li>没有追踪Cookie，没有用户表单，不收集任何输入信息；</li>
-<li>网页本身不会向外发送任何用户数据；</li>
-<li>项目发布的bat脚本，不会偷偷上传你的本地隐私文件。</li>
+<li><span class="lang-zh">网页不会采集IP、设备信息、浏览记录；</span><span class="lang-en">No IP / device / browsing‑log collection;</span></li>
+<li><span class="lang-zh">没有追踪Cookie，没有用户表单，不收集任何输入信息；</span><span class="lang-en">No tracking cookies, no user input forms;</span></li>
+<li><span class="lang-zh">网页本身不会向外发送任何用户数据；</span><span class="lang-en">Website will not send your user data outward;</span></li>
+<li><span class="lang-zh">项目发布的bat脚本，不会偷偷上传你的本地隐私文件。</span><span class="lang-en">Released bat scripts will not secretly upload your local private files.</span></li>
 </ul>
 <br>
-<p><strong>外部第三方工具提示</strong></p>
-<p>页面中部分工具跳转至外部网站下载，外部网站的隐私政策由对方平台负责，与本项目无关。</p>
+<p><strong><span class="lang-zh">外部第三方工具提示</span><span class="lang-en">Third‑party tools reminder</span></strong></p>
+<p>
+<span class="lang-zh">页面中部分工具跳转至外部网站下载，外部网站的隐私政策由对方平台负责，与本项目无关。</span>
+<span class="lang-en">Some links jump to external websites for download. Their privacy policy belongs to third‑party platforms, not related to this project.</span>
+</p>
 <br>
-<p><strong>开源许可</strong></p>
-<p>本项目全部代码基于MIT开源协议开放。</p>
+<p><strong><span class="lang-zh">开源许可</span><span class="lang-en">Open‑source License</span></strong></p>
+<p><span class="lang-zh">本项目全部代码基于MIT开源协议开放。</span><span class="lang-en">All project code released under MIT License.</span></p>
         </div>
     </div>
 </div>
@@ -509,42 +517,38 @@ footer a{
 const starOverlay = document.getElementById("starOverlay");
 const privacyOverlay = document.getElementById("privacyOverlay");
 
-let downloadType = "single";
-let url1 = "";
-let url2 = "";
+let downloadUrl = "";
+let saveFileName = "";
 
-function setDownloadSingle(u){
-    downloadType = "single";
-    url1 = u;
-}
-function setDownloadDouble(uA,uB){
-    downloadType = "double";
-    url1 = uA;
-    url2 = uB;
-}
-
-function openStarModal(){
+function openStarModal(url, filename){
+    downloadUrl = url;
+    saveFileName = filename;
     starOverlay.style.display="flex";
 }
-function closeStarModal(){
+
+async function closeStarModal(){
     starOverlay.style.display="none";
-    if(downloadType === "single" && url1){
-        window.location.href = url1;
-    }else if(downloadType === "double"){
-        const a1 = document.createElement('a');
-        a1.href = url1;
-        a1.click();
-        setTimeout(()=>{
-            const a2 = document.createElement('a');
-            a2.href = url2;
-            a2.click();
-        },300);
+    if(!downloadUrl) return;
+    try{
+        const res = await fetch(downloadUrl);
+        const blob = await res.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = saveFileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(a.href);
+    }catch(err){
+        alert("下载失败！请确认已经部署到GitHub Pages线上访问，本地打开不支持下载。");
     }
 }
+
 function goStar(){
-    window.open("https://github.com/Hrctool/Hrc-tool/stargazers","_blank");
+    window.open("https://github.com/Hrctool/Hrc‑tool/stargazers","_blank");
     closeStarModal();
 }
+
 starOverlay.addEventListener("click",e=>{
     if(e.target === starOverlay) closeStarModal();
 })
@@ -559,20 +563,27 @@ privacyOverlay.addEventListener("click",e=>{
     if(e.target === privacyOverlay) closePrivacy();
 })
 
-//中英文切换
-let currentLang = "zh";
+//切换语言核心逻辑
+let isZh = true;
 const langBtn = document.getElementById("langBtn");
-langBtn.addEventListener("click",()=>{
-    currentLang = currentLang === "zh" ? "en" : "zh";
-    document.querySelectorAll('[data-lang]').forEach(el=>{
-        const t = el.getAttribute(`data-${currentLang}`);
-        if(t) el.innerText = t;
-    })
-    document.querySelectorAll('.lang-switch span').forEach(s=>{
-        s.classList.remove('lang-active');
-        if(s.dataset.lang === currentLang) s.classList.add('lang-active');
-    })
-    document.documentElement.lang = currentLang;
+
+langBtn.addEventListener("click", ()=>{
+    isZh = !isZh;
+    if(isZh){
+        //切中文
+        document.querySelectorAll(".lang-zh").forEach(el=> el.style.display = "block");
+        document.querySelectorAll(".lang-en").forEach(el=> el.style.display = "none");
+        langBtn.querySelectorAll("span").forEach(sp=> sp.classList.remove("lang-active"));
+        langBtn.querySelector('[data-lang="zh"]').classList.add("lang-active");
+        document.documentElement.lang = "zh-CN";
+    }else{
+        //切英文
+        document.querySelectorAll(".lang-zh").forEach(el=> el.style.display = "none");
+        document.querySelectorAll(".lang-en").forEach(el=> el.style.display = "block");
+        langBtn.querySelectorAll("span").forEach(sp=> sp.classList.remove("lang-active"));
+        langBtn.querySelector('[data-lang="en"]').classList.add("lang-active");
+        document.documentElement.lang = "en";
+    }
 })
 </script>
 </body>
